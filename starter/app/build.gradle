@@ -118,7 +118,7 @@ dependencies {
     // Once https://issuetracker.google.com/127986458 is fixed this can be testImplementation
     debugImplementation "androidx.fragment:fragment-testing:1.5.5"
     implementation "androidx.test:core:1.5.0"
-    implementation "androidx.fragment:fragment:1.5.5"
+    implementation "androidx.fragment:fragment-ktx:1.5.5"
     androidTestImplementation "org.mockito:mockito-core:2.28.3"
     androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:2.28.3"
     androidTestImplementation('org.koin:koin-test:3.3.0') { exclude group: 'org.mockito' }
