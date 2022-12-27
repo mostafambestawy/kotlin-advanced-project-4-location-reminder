@@ -76,8 +76,12 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutinesVersion"
 
     //Koin
-    implementation "org.koin:koin-android:$koinVersion"
-    implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
+    // Koin for Android
+    //https://insert-koin.io/docs/quickstart/android
+    implementation "io.insert-koin:koin-android:$koinVersion"
+    //https://insert-koin.io/docs/quickstart/android-viewmodel
+    implementation "io.insert-koin:koin-android:$koinVersion"
+
 
 
     // Dependencies for local unit tests
