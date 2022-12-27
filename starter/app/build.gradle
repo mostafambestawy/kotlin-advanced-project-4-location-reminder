@@ -56,7 +56,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation "androidx.cardview:cardview:$cardVersion"
-    //material:1.7.0 causes Can't determine type for tag '<macro name="m3_comp_bottom_app_bar_container_color">?attr/colorSurface</macro>'
+    //com.google.android.material:material:1.7.0 causes Can't determine type for tag '<macro name="m3_comp_bottom_app_bar_container_color">?attr/colorSurface</macro>'
     implementation "com.google.android.material:material:1.6.0"
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     implementation "androidx.constraintlayout:constraintlayout:2.2.0-alpha05"

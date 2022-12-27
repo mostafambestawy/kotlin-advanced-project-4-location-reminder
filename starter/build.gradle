@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    //https://stackoverflow.com/questions/67699823/module-was-compiled-with-an-incompatible-version-of-kotlin-the-binary-version-o
+    //1.7.20 causes Un Resolved R
     ext.kotlinVersion = '1.6.0'
     ext.navigationVersion = "2.2.0"
 
@@ -43,7 +43,6 @@ ext {
     androidXVersion = '1.0.0'
     androidXAnnotations = '1.0.1'
     androidXLegacySupport = '1.0.0'
-    //https://github.com/InsertKoinIO/koin/issues/337
     appCompatVersion = '1.5.1'
     archLifecycleVersion = '2.2.0'
     cardVersion = '1.0.0'
@@ -54,7 +53,6 @@ ext {
     constraintVersion = '2.0.0-rc1'
     dexMakerVersion = '2.12.1'
     coroutinesVersion = '1.2.1'
-    //https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
     roomVersion = '2.4.3'
     koinVersion = '2.0.1'
     truthVersion = '0.44'
