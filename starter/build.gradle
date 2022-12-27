@@ -54,7 +54,8 @@ ext {
     constraintVersion = '2.0.0-rc1'
     dexMakerVersion = '2.12.1'
     coroutinesVersion = '1.2.1'
-    roomVersion = '2.2.5'
+    //https://stackoverflow.com/questions/46445964/room-not-sure-how-to-convert-a-cursor-to-this-methods-return-type-which-meth
+    roomVersion = '2.4.3'
     koinVersion = '2.0.1'
     truthVersion = '0.44'
     junitVersion = '4.12'

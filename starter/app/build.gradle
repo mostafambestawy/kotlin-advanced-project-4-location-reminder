@@ -30,6 +30,11 @@ android {
         includeAndroidResources = true
         returnDefaultValues = true
     }
+    //https://stackoverflow.com/questions/49512629/default-interface-methods-are-only-supported-starting-with-android-7-0-nougat
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 
     //dataBinding {
     //    enabled = true
@@ -80,7 +85,7 @@ dependencies {
     //https://insert-koin.io/docs/quickstart/android
     implementation "io.insert-koin:koin-android:$koinVersion"
     //https://insert-koin.io/docs/quickstart/android-viewmodel
-    implementation "io.insert-koin:koin-android:$koinVersion"
+    //implementation "io.insert-koin:koin-android:$koinVersion"
 
 
 
