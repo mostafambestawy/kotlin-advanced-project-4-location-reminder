@@ -34,14 +34,16 @@ ext {
     // Sdk and tools
     // Support library and architecture components support minSdk 14 and above.
     minSdkVersion = 16
-    targetSdkVersion = 30
-    compileSdkVersion = 30
+    //https://stackoverflow.com/questions/69021225/resource-linking-fails-on-lstar
+    targetSdkVersion = 31
+    compileSdkVersion = 31
 
     // App dependencies
     androidXVersion = '1.0.0'
     androidXAnnotations = '1.0.1'
     androidXLegacySupport = '1.0.0'
-    appCompatVersion = '1.2.0'
+    //https://github.com/InsertKoinIO/koin/issues/337
+    appCompatVersion = '1.5.1'
     archLifecycleVersion = '2.2.0'
     cardVersion = '1.0.0'
     materialVersion = '1.1.0'
