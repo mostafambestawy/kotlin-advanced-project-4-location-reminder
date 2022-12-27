@@ -10,6 +10,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.get
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import org.koin.androidx.viewmodel.dsl.viewModel
 
 
 class MyApp : Application() {
@@ -22,7 +23,7 @@ class MyApp : Application() {
          */
         val myModule = module {
             //Declare a ViewModel - be later inject into Fragment with dedicated injector using by viewModel()
-            viewModel    {
+            viewModel {
                 RemindersListViewModel(
                     get(),
                     get() as ReminderDataSource
