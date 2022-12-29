@@ -5,6 +5,10 @@
 
     <data>
 
+        <variable
+            name="loginRegistrationViewModel"
+            type="com.udacity.project4.loginregisteration.LoginRegistrationViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,7 +44,8 @@
             tools:text="Haven\'t Account yet?, Register Now "
             android:textAlignment="center"
             android:padding="12dp"
-            android:layout_margin="36dp"/>
+            android:layout_margin="36dp"
+            android:onClick="@{()->loginRegistrationViewModel.toggleType()}"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
