@@ -34,7 +34,7 @@ class LoginRegistrationFragment : Fragment(){
         const val SIGN_IN_RESULT_CODE = 1
     }
     //override val _viewModel: BaseViewModel by inject()
-    private lateinit var loginRegistrationViewModel:LoginRegistrationViewModel;
+    private lateinit var loginRegistrationViewModel:LoginRegistrationViewModel
     private lateinit var binding: FragmentLoginRegistrationBinding
 
             override fun onCreateView(

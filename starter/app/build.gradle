@@ -57,6 +57,9 @@ dependencies {
     // firebase ui auth
     implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
 
+    //solve problem firebase email authentication -> Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent
+    implementation 'com.google.android.gms:play-services-auth:20.4.0'
+
     implementation "androidx.cardview:cardview:$cardVersion"
     //com.google.android.material:material:1.7.0 causes Can't determine type for tag '<macro name="m3_comp_bottom_app_bar_container_color">?attr/colorSurface</macro>'
     implementation "com.google.android.material:material:1.6.0"
