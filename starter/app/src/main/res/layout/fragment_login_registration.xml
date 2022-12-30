@@ -35,7 +35,8 @@
             app:layout_constraintTop_toBottomOf="@+id/title"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            style="@style/mainButton" />
+            style="@style/mainButton"
+            android:onClick="@{()-> loginRegistrationViewModel.loginRegister()}"/>
         <TextView
             android:id="@+id/bottomText"
             android:layout_width="match_parent"
