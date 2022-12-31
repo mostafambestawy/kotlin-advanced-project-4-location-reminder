@@ -23,8 +23,9 @@ import com.udacity.project4.utils.enums.LoginRegistrationType
  */
 class AuthenticationActivity : AppCompatActivity() {
     companion object {
-        const val SIGN_IN_RESULT_CODE  = 1
+        const val SIGN_IN_RESULT_CODE = 1
     }
+
     private lateinit var authenticationActivityViewModel: AuthenticationActivityViewModel
     private lateinit var binding: ActivityAuthenticationBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +71,13 @@ class AuthenticationActivity : AppCompatActivity() {
             if (it) {
                 authenticationActivityViewModel.onLoginRegister()
                 launchSignInFlow();
+            }
+        }
+        authenticationActivityViewModel.typeEvent.observe(this) {
+            if (it) {
+                authenticationActivityViewModel.onTypeChanged()
+                if (authenticationActivityViewModel.type.value == LoginRegistrationType.Login) updateLoginUI()
+                else updateRegisterUI()
             }
         }
 

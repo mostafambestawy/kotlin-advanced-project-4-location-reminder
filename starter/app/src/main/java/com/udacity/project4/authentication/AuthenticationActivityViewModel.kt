@@ -41,9 +41,15 @@ class AuthenticationActivityViewModel:ViewModel() {
 
     private fun setLoginType() {
         type.value = LoginRegistrationType.Login
+        typeEvent. value = true
     }
+    var typeEvent = MutableLiveData(false)
 
     private fun setRegistrationType() {
         type.value = LoginRegistrationType.Registration
+        typeEvent.value = true;
+    }
+    fun  onTypeChanged(){
+        typeEvent.value = false
     }
 }

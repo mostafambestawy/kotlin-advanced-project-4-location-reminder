@@ -29,17 +29,7 @@ class ReminderListFragment : BaseFragment() {
                 R.layout.fragment_reminders, container, false
             )
         binding.viewModel = _viewModel
-       /* loginRegistrationViewModel = ViewModelProvider(this)[LoginRegistrationViewModel::class.java]
-        loginRegistrationViewModel.authenticationStatus.observe(viewLifecycleOwner){
-            if(it != null){
-                when(it)
-                {
 
-                    AuthenticationStatus.UnAuthenticated -> findNavController().navigate(ReminderListFragmentDirections.actionReminderListFragmentToLoginRegistrationFragment())
-                    else ->{}
-                }
-            }
-        }*/
 
 
         setHasOptionsMenu(true)
