@@ -1,19 +1,17 @@
-package com.udacity.project4.loginregisteration
-
+package com.udacity.project4.authentication
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.map
-import com.udacity.project4.authentication.FirebaseUserLiveData
 import com.udacity.project4.utils.enums.AuthenticationStatus
 import com.udacity.project4.utils.enums.LoginRegistrationType
 
-class LoginRegistrationViewModel : ViewModel() {
+class AuthenticationActivityViewModel:ViewModel() {
     val type: MutableLiveData<LoginRegistrationType> =
         MutableLiveData(LoginRegistrationType.Registration)
 
     val authenticationStatus = FirebaseUserLiveData().map {
-         if (it != null) {
+        if (it != null) {
             AuthenticationStatus.Authenticated
         }  else{
             AuthenticationStatus.UnAuthenticated
@@ -48,6 +46,4 @@ class LoginRegistrationViewModel : ViewModel() {
     private fun setRegistrationType() {
         type.value = LoginRegistrationType.Registration
     }
-
-
 }
