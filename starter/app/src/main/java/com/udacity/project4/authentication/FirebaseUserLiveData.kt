@@ -8,9 +8,12 @@ class FirebaseUserLiveData : LiveData<FirebaseUser?>() {
     private val firebaseAuth = FirebaseAuth.getInstance()
    // var newUser:Boolean = true
     private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+
         value = firebaseAuth.currentUser
-     //   newUser = false
+
     }
+
+
 
 
     override fun onActive() {

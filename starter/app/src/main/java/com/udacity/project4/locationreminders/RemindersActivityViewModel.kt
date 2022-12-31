@@ -7,5 +7,5 @@ import com.udacity.project4.utils.enums.AuthenticationStatus
 import com.udacity.project4.utils.enums.LoginRegistrationType
 
 class RemindersActivityViewModel(val app: Application) : BaseViewModel(app) {
-    val authenticationStatus = MutableLiveData(AuthenticationStatus.NewUser)
+    val authenticationStatus = MutableLiveData(AuthenticationStatus.UnAuthenticated)
 }

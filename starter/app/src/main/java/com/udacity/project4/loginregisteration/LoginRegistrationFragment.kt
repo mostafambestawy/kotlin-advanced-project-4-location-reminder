@@ -1,6 +1,7 @@
 package com.udacity.project4.loginregisteration
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -62,26 +63,17 @@ class LoginRegistrationFragment : Fragment(){
                 }
 
 
-                loginRegistrationViewModel.type.observe(viewLifecycleOwner){
-                    when(it!!){
-                        LoginRegistrationType.Registration->{updateRegisterUI()}
-                        LoginRegistrationType.Login -> {updateLoginUI()}
-
-                    }
-                }
                 fun navigateToReminderListFragment(){
                     findNavController().navigate(LoginRegistrationFragmentDirections.actionLoginRegistrationFragmentToReminderListFragment())
                 }
-                fun navigateToLoginRegistrationFragment(authenticationStatus: AuthenticationStatus){
-                    //TODO navigateToLoginRegistrationFragment
-                }
+
                 loginRegistrationViewModel.authenticationStatus.observe(viewLifecycleOwner){
                     if(it != null){
                         when(it)
                         {
                             AuthenticationStatus.Authenticated -> navigateToReminderListFragment()
-                            AuthenticationStatus.UnAuthenticated -> navigateToLoginRegistrationFragment(AuthenticationStatus.UnAuthenticated)
-                            AuthenticationStatus.NewUser -> navigateToLoginRegistrationFragment(AuthenticationStatus.NewUser)
+                            AuthenticationStatus.UnAuthenticated -> {}
+
                         }
                     }
                 }
@@ -91,6 +83,9 @@ class LoginRegistrationFragment : Fragment(){
                        launchSignInFlow();
                     }
                 }
+                val authenticationHappened =  isAuthenticationTryHappened()
+                if(authenticationHappened) updateLoginUI()
+                else updateRegisterUI()
 
 
 
@@ -112,6 +107,7 @@ class LoginRegistrationFragment : Fragment(){
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SIGN_IN_RESULT_CODE) {
+            saveToAuthenticationTryHappenedSharedPreferences()
             val response = IdpResponse.fromResultIntent(data)
             if (resultCode == Activity.RESULT_OK) {
                 // Successfully signed in user.
@@ -121,6 +117,8 @@ class LoginRegistrationFragment : Fragment(){
                             "${FirebaseAuth.getInstance().currentUser?.displayName}!"
                 )
 
+
+
             } else {
                 // Sign in failed. If response is null the user canceled the sign-in flow using
                 // the back button. Otherwise check response.getError().getErrorCode() and handle
@@ -128,5 +126,19 @@ class LoginRegistrationFragment : Fragment(){
                 Log.i("TAG", "Sign in unsuccessful ${response?.error?.errorCode}")
             }
         }
+    }
+    private fun saveToAuthenticationTryHappenedSharedPreferences() {
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+        with (sharedPref.edit()) {
+            putBoolean(getString(R.string.authentication_try_happened), true)
+            apply()
+        }
+
+    }
+    private fun isAuthenticationTryHappened():Boolean{
+        val sharedPref = activity?.getPreferences(Context.MODE_PRIVATE)
+        val defaultValue = false
+        val value = sharedPref?.getBoolean(getString(R.string.authentication_try_happened), defaultValue)
+        return value!!
     }
 }

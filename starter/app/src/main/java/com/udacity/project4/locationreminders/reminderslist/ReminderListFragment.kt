@@ -1,5 +1,6 @@
 package com.udacity.project4.locationreminders.reminderslist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
@@ -44,6 +45,7 @@ class ReminderListFragment : BaseFragment() {
                 }
             }
         }
+
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(false)
@@ -102,5 +104,6 @@ class ReminderListFragment : BaseFragment() {
 //        display logout as menu item
         inflater.inflate(R.menu.main_menu, menu)
     }
+
 
 }
