@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -58,6 +59,7 @@ class AuthenticationActivity : AppCompatActivity() {
         fun startRemindersActivity() {
             startActivity(Intent(this, RemindersActivity::class.java))
         }
+
         authenticationActivityViewModel.authenticationStatus.observe(this) {
             if (it != null) {
                 when (it) {

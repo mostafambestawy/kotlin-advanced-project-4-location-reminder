@@ -16,7 +16,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 class ReminderListFragment : BaseFragment() {
     //use Koin to retrieve the ViewModel instance
     override val _viewModel: RemindersListViewModel by viewModel()
-    //private lateinit var loginRegistrationViewModel:LoginRegistrationViewModel
+
 
     private lateinit var binding: FragmentRemindersBinding
     override fun onCreateView(
@@ -29,7 +29,6 @@ class ReminderListFragment : BaseFragment() {
                 R.layout.fragment_reminders, container, false
             )
         binding.viewModel = _viewModel
-
 
 
         setHasOptionsMenu(true)

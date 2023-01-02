@@ -31,6 +31,7 @@ import org.koin.android.ext.android.inject
 
 class SelectLocationFragment : BaseFragment() {
 
+    private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
     //Use Koin to get the view model of the SaveReminder
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSelectLocationBinding
