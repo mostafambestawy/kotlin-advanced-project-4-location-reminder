@@ -47,4 +47,5 @@
     <string name="login_now">Login</string>
     <string name="havent_account">Haven\'t account yet, Register Now</string>
     <string name="authentication_try_happened">AuthenticationTryHappened</string>
+    <string name="select">Select</string>
 </resources>
