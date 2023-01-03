@@ -1,6 +1,7 @@
 package com.udacity.project4.locationreminders
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -17,6 +18,8 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.udacity.project4.R
 import com.udacity.project4.authentication.AuthenticationActivityViewModel
+import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.REQUEST_ENABLE_MY_LOCATION
+import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.SelectLocationFragment
 import kotlinx.android.synthetic.main.activity_reminders.*
 
 private const val REQUEST_TURN_DEVICE_LOCATION_ON = 2
@@ -52,6 +55,7 @@ class RemindersActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -67,15 +71,21 @@ class RemindersActivity : AppCompatActivity() {
             // Permission denied.
             Log.d("TAG", getString(R.string.permission_denied_explanation))
         } else {
-            if (runningQOrLater && askBackGroundPermissionStep) {
-                //requestCode don not care
-                ActivityCompat.requestPermissions(
-                    this,
-                    arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
-                    0
-                )
-                askBackGroundPermissionStep = false
-            } else checkDeviceLocationSettingsAndNavigateToSelectLocation()
+            when(requestCode) {
+                0 -> {
+                    if (runningQOrLater && askBackGroundPermissionStep) {
+                        //requestCode don not care
+                        ActivityCompat.requestPermissions(
+                            this,
+                            arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                            0
+                        )
+                        askBackGroundPermissionStep = false
+                    } else checkDeviceLocationSettingsAndNavigateToSelectLocation()
+                }
+
+                REQUEST_ENABLE_MY_LOCATION -> {SelectLocationFragment().map?.isMyLocationEnabled = true }
+            }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }

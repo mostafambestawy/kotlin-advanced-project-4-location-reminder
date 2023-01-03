@@ -2,7 +2,9 @@ package com.udacity.project4.locationreminders.savereminder.selectreminderlocati
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -10,6 +12,8 @@ import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.common.api.ApiException
@@ -25,16 +29,21 @@ import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
+import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 
-class SelectLocationFragment : BaseFragment() {
+ const val REQUEST_ENABLE_MY_LOCATION = 10
+class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
 
-    private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
+
     //Use Koin to get the view model of the SaveReminder
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSelectLocationBinding
+    lateinit var map: GoogleMap
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -49,7 +58,12 @@ class SelectLocationFragment : BaseFragment() {
         setDisplayHomeAsUpEnabled(true)
 
 //        TODO: add the map setup implementation
+        val mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+
 //        TODO: zoom to the user location after taking his permission
+
 //        TODO: add style to the map
 //        TODO: put a marker to location that the user selected
 
@@ -72,21 +86,79 @@ class SelectLocationFragment : BaseFragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem) = when (item.itemId) {
-        // TODO: Change the map type based on the user's selection.
         R.id.normal_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_NORMAL
             true
         }
         R.id.hybrid_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_HYBRID
             true
         }
         R.id.satellite_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_SATELLITE
             true
         }
         R.id.terrain_map -> {
+            map.mapType = GoogleMap.MAP_TYPE_TERRAIN
             true
         }
         else -> super.onOptionsItemSelected(item)
     }
+
+    override fun onMapReady(p0: GoogleMap) {
+        map = p0
+        enableMyLocation()
+        //zoomToCurrentLocationIfConfirmed()
+        setMapClick(map)
+
+
+    }
+    private fun isFineLocationPermissionGranted() : Boolean = ContextCompat.checkSelfPermission(
+        (activity as RemindersActivity),
+        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+
+    @SuppressLint("MissingPermission")
+    private fun enableMyLocation() {
+        if (isFineLocationPermissionGranted()) {
+            map.isMyLocationEnabled = true
+        }
+        else {
+            ActivityCompat.requestPermissions(
+                (activity as RemindersActivity),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+                REQUEST_ENABLE_MY_LOCATION
+            )
+        }
+    }
+
+    private fun zoomToCurrentLocationIfConfirmed(){
+        val builder = AlertDialog.Builder(activity)
+        builder.setMessage("Do you  you want to zoom current Location ?")
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                // Delete selected note from database
+                zoomToCurrentLocation()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                // Dismiss the dialog
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
+    }
+    private fun zoomToCurrentLocation(){
+
+    }
+    private fun setMapClick(map: GoogleMap) {
+        map.setOnMapClickListener { latLng ->
+            map.addMarker(
+                MarkerOptions()
+                    .position(latLng)
+            )
+        }
+    }
+
+
 
 
 }
