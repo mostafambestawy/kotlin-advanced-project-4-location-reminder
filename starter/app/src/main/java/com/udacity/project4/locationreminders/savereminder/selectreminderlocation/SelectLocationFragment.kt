@@ -26,6 +26,8 @@ import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
+import java.math.RoundingMode
+import java.text.DecimalFormat
 
 
 const val REQUEST_ENABLE_MY_LOCATION = 10
@@ -94,12 +96,17 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         _viewModel.selectedPOI.value = selectedPoi
         if (selectedPoi != null) _viewModel.reminderSelectedLocationStr.value = selectedPoi?.name
         else _viewModel.reminderSelectedLocationStr.value =
-            StringBuilder().append(selectedLatLng?.latitude).append(",")
-                .append(selectedLatLng?.longitude).toString()
+            StringBuilder().append(roundDouble(selectedLatLng?.latitude)).append(",")
+                .append(roundDouble(selectedLatLng?.longitude)).toString()
         navigateToSaveLocationFragment()
 
     }
 
+    private fun roundDouble(double: Double?):String{
+        val decimalFormat = DecimalFormat("#.######")
+        decimalFormat.roundingMode =  RoundingMode.DOWN
+        return decimalFormat.format(double)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.map_options, menu)
