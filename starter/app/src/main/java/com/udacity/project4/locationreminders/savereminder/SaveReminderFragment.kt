@@ -2,34 +2,22 @@ package com.udacity.project4.locationreminders.savereminder
 
 import android.Manifest
 import android.annotation.TargetApi
-import android.content.Intent
-import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
-import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.LocationSettingsRequest
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
-import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSaveReminderBinding
 import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 
 
-private const val REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE = 3
-private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 4
-private const val LOCATION_PERMISSION_INDEX = 0
-private const val BACKGROUND_LOCATION_PERMISSION_INDEX = 1
 
 
 class SaveReminderFragment : BaseFragment() {
@@ -118,53 +106,28 @@ class SaveReminderFragment : BaseFragment() {
             return
 
 
-        var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-
-        val resultCode = when {
-            runningQOrLater -> {
-                permissionsArray += Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE
-            }
-            else -> REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE
-        }
 
         Log.d("TAG", "Request foreground only location permission")
 
-        ActivityCompat.requestPermissions(activity as RemindersActivity,permissionsArray,resultCode)
-        //requestPermissions(  permissionsArray, resultCode)
+
+        /**Any Android apps targeting API 30 are now no longer allowed to ask for BACKGROUND_PERMISSION at the same time as regular location permission. You have to split it into 2 seperate asks:
+
+        Ask for regular foreground location permission, once granted,
+        Ask for BACKGROUND_LOCATION permission on a new ask
+        https://stackoverflow.com/questions/69102394/permissions-dialog-not-showing-in-android-11
+         **/
+
+        if(runningQOrLater) (activity as RemindersActivity).askBackGroundPermissionStep = true;
+        // resultCode do not care
+        ActivityCompat.requestPermissions(activity as RemindersActivity, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),0)
+
     }
 
 
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
-            // We don't rely on the result code, but just check the location setting again
-            checkDeviceLocationSettingsAndNavigateToSelectLocation(false)
-        }
-    }*/
 
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
 
-        Log.d("TAG", "onRequestPermissionResult")
 
-        if (
-            grantResults.isEmpty() ||
-            grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
-            (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE &&
-                    grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] ==
-                    PackageManager.PERMISSION_DENIED)
-        ) {
-            // Permission denied.
-            _viewModel.showSnackBar.value = getString(R.string.permission_denied_explanation)
-        } else {
-            (activity as RemindersActivity).checkDeviceLocationSettingsAndNavigateToSelectLocation()
-        }
-    }
 
 
 }

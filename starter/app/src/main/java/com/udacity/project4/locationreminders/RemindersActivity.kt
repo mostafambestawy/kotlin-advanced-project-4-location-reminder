@@ -1,11 +1,13 @@
 package com.udacity.project4.locationreminders
 
+import android.Manifest
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -15,22 +17,21 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.udacity.project4.R
 import com.udacity.project4.authentication.AuthenticationActivityViewModel
-import com.udacity.project4.base.NavigationCommand
-import com.udacity.project4.locationreminders.savereminder.*
 import kotlinx.android.synthetic.main.activity_reminders.*
 
 private const val REQUEST_TURN_DEVICE_LOCATION_ON = 2
-private const val REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE = 3
 
-private const val LOCATION_PERMISSION_INDEX = 0
-private const val BACKGROUND_LOCATION_PERMISSION_INDEX = 1
+
 
 /**
  * The RemindersActivity that holds the reminders fragments
  */
 
 class RemindersActivity : AppCompatActivity() {
-    private lateinit var authenticationActivityViewModel: AuthenticationActivityViewModel;
+    private lateinit var authenticationActivityViewModel: AuthenticationActivityViewModel
+    private val runningQOrLater =
+        android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
+    var askBackGroundPermissionStep = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reminders)
@@ -60,18 +61,25 @@ class RemindersActivity : AppCompatActivity() {
 
         if (
             grantResults.isEmpty() ||
-            grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
-            (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE &&
-                    grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] ==
-                    PackageManager.PERMISSION_DENIED)
+            grantResults[0] == PackageManager.PERMISSION_DENIED
+
         ) {
             // Permission denied.
             Log.d("TAG", getString(R.string.permission_denied_explanation))
         } else {
-            checkDeviceLocationSettingsAndNavigateToSelectLocation()
+            if (runningQOrLater && askBackGroundPermissionStep) {
+                //requestCode don not care
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.ACCESS_BACKGROUND_LOCATION),
+                    0
+                )
+                askBackGroundPermissionStep = false
+            } else checkDeviceLocationSettingsAndNavigateToSelectLocation()
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
+
     fun checkDeviceLocationSettingsAndNavigateToSelectLocation(resolve: Boolean = true) {
         val locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_LOW_POWER
@@ -104,11 +112,9 @@ class RemindersActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun navigateToSelectLocation() {
-    findNavController(R.id.nav_host_fragment).navigate(R.id.selectLocationFragment)
-      /*  _viewModel.navigationCommand.value =
-            NavigationCommand.To(SaveReminderFragmentDirections.actionSaveReminderFragmentToSelectLocationFragment())
-  */
+        findNavController(R.id.nav_host_fragment).navigate(R.id.selectLocationFragment)
     }
 
 }
