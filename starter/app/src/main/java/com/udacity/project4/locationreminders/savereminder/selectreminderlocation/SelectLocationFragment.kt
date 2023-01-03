@@ -37,8 +37,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSelectLocationBinding
     lateinit var map: GoogleMap
-    private var selectedLatLng:LatLng? = null
-    private var selectedPoi:PointOfInterest? = null
+    private var selectedLatLng: LatLng? = null
+    private var selectedPoi: PointOfInterest? = null
 
 
     override fun onCreateView(
@@ -68,11 +68,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 //        TODODONE: call this function after the user confirms on the selected location
 
         binding.submitLocationButton.setOnClickListener {
-            if(selectedLatLng == null){
+            if (selectedLatLng == null) {
                 _viewModel.showSnackBar.value = getString(R.string.tap_to_select_location)
-            }
-            else{
-               confirmDialog("Sure With the Selected Location") {onLocationSelected()}
+            } else {
+                confirmDialog("Sure With the Selected Location") { onLocationSelected() }
             }
         }
 
@@ -83,7 +82,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
     private fun navigateToSaveLocationFragment() {
         _viewModel.navigationCommand.value =
-        NavigationCommand.To(SelectLocationFragmentDirections.actionSelectLocationFragmentToSaveReminderFragment())
+            NavigationCommand.To(SelectLocationFragmentDirections.actionSelectLocationFragmentToSaveReminderFragment())
     }
 
     private fun onLocationSelected() {
@@ -93,7 +92,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         _viewModel.latitude.value = selectedLatLng?.latitude
         _viewModel.longitude.value = selectedLatLng?.longitude
         _viewModel.selectedPOI.value = selectedPoi
-
+        if (selectedPoi != null) _viewModel.reminderSelectedLocationStr.value = selectedPoi?.name
+        else _viewModel.reminderSelectedLocationStr.value =
+            StringBuilder().append(selectedLatLng?.latitude).append(",")
+                .append(selectedLatLng?.longitude).toString()
         navigateToSaveLocationFragment()
 
     }
@@ -155,13 +157,14 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private fun zoomToCurrentLocationIfConfirmed() {
         confirmDialog("Do you  you want to zoom current Location ?") { zoomToCurrentLocation() }
     }
-    private fun confirmDialog(message:String,action: ()-> Unit){
+
+    private fun confirmDialog(message: String, action: () -> Unit) {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage(message)
             .setCancelable(false)
             .setPositiveButton("Yes") { _, _ ->
                 // Delete selected note from database
-               action()
+                action()
             }
             .setNegativeButton("No") { dialog, _ ->
                 // Dismiss the dialog
@@ -172,7 +175,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun zoomToCurrentLocation() {
-        if(map.myLocation != null ) {
+        if (map.myLocation != null) {
             val zoomLevel = 15f
             val location = map.myLocation
             map.moveCamera(
@@ -197,6 +200,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         }
     }
+
     private fun setMapStyle(map: GoogleMap) {
         try {
             // Customize the styling of the base map using a JSON object defined
@@ -215,6 +219,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             Log.e("TAG", "Can't find style. Error: ", e)
         }
     }
+
     private fun setPoiClick(map: GoogleMap) {
         map.setOnPoiClickListener { poi ->
             map.clear()
