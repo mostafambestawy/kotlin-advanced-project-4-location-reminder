@@ -13,27 +13,29 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <Button
+            android:id="@+id/submitLocationButton"
+            style="@style/mainButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@string/select"
+            />
         <!--TODO: Add the map fragment for the user to select the location-->
         <fragment
             android:id="@+id/mapFragment"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:name="com.google.android.gms.maps.SupportMapFragment"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            />
-        <Button
-            android:id="@+id/submitLocationButton"
-            style="@style/mainButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/mapFragment"
+            app:layout_constraintTop_toBottomOf="@+id/submitLocationButton"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="20dp"
-            android:text="@string/select"
-         />
+
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
