@@ -105,10 +105,7 @@ class SaveReminderFragment : BaseFragment() {
         if (foregroundAndBackgroundLocationPermissionApproved())
             return
 
-
-
         Log.d("TAG", "Request foreground only location permission")
-
 
         /**Any Android apps targeting API 30 are now no longer allowed to ask for BACKGROUND_PERMISSION at the same time as regular location permission. You have to split it into 2 seperate asks:
 

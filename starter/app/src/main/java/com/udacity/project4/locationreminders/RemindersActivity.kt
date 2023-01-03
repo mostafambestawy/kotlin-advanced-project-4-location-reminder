@@ -126,6 +126,7 @@ class RemindersActivity : AppCompatActivity() {
 
     private fun navigateToSelectLocation() {
         findNavController(R.id.nav_host_fragment).navigate(R.id.selectLocationFragment)
+
     }
 
 }
