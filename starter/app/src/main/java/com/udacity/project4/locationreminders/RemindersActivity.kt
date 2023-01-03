@@ -84,7 +84,8 @@ class RemindersActivity : AppCompatActivity() {
                     } else checkDeviceLocationSettingsAndNavigateToSelectLocation()
                 }
 
-                REQUEST_ENABLE_MY_LOCATION -> {SelectLocationFragment().map?.isMyLocationEnabled = true }
+                REQUEST_ENABLE_MY_LOCATION -> {
+                    SelectLocationFragment().map.isMyLocationEnabled = true }
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

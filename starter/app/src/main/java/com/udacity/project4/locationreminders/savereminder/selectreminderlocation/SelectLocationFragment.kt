@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
@@ -34,6 +35,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSelectLocationBinding
     lateinit var map: GoogleMap
+    private var selectedLatLng:LatLng? = null
 
 
     override fun onCreateView(
@@ -125,12 +127,15 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun zoomToCurrentLocationIfConfirmed() {
+        confirmDialog("Do you  you want to zoom current Location ?") { zoomToCurrentLocation() }
+    }
+    private fun confirmDialog(message:String,action: ()-> Unit){
         val builder = AlertDialog.Builder(activity)
-        builder.setMessage("Do you  you want to zoom current Location ?")
+        builder.setMessage(message)
             .setCancelable(false)
             .setPositiveButton("Yes") { _, _ ->
                 // Delete selected note from database
-                zoomToCurrentLocation()
+               action()
             }
             .setNegativeButton("No") { dialog, _ ->
                 // Dismiss the dialog
@@ -141,24 +146,28 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun zoomToCurrentLocation() {
-        val zoomLevel = 15f
-        val location = map.myLocation
-        map.moveCamera(
-            CameraUpdateFactory.newLatLngZoom(
-                LatLng(
-                    location.getLatitude(),
-                    location.getLongitude(),
-                ), zoomLevel
+        if(map.myLocation != null ) {
+            val zoomLevel = 15f
+            val location = map.myLocation
+            map.moveCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        location.latitude,
+                        location.longitude,
+                    ), zoomLevel
+                )
             )
-        )
+        }
     }
 
     private fun setMapClick(map: GoogleMap) {
         map.setOnMapClickListener { latLng ->
+            map.clear()
             map.addMarker(
                 MarkerOptions()
                     .position(latLng)
             )
+            selectedLatLng = latLng
         }
     }
 
