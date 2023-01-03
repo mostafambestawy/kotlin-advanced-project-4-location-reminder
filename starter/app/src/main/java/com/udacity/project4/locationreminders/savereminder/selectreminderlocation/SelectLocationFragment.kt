@@ -3,46 +3,37 @@ package com.udacity.project4.locationreminders.savereminder.selectreminderlocati
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.AlertDialog
-import android.content.Intent
-import android.content.IntentSender
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
-import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 
- const val REQUEST_ENABLE_MY_LOCATION = 10
-class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
+
+const val REQUEST_ENABLE_MY_LOCATION = 10
+
+class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
 
     //Use Koin to get the view model of the SaveReminder
     override val _viewModel: SaveReminderViewModel by inject()
     private lateinit var binding: FragmentSelectLocationBinding
     lateinit var map: GoogleMap
-
 
 
     override fun onCreateView(
@@ -58,7 +49,8 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
         setDisplayHomeAsUpEnabled(true)
 
 //        TODO: add the map setup implementation
-        val mapFragment = childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.mapFragment) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
 
@@ -108,21 +100,22 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
     override fun onMapReady(p0: GoogleMap) {
         map = p0
         enableMyLocation()
-        //zoomToCurrentLocationIfConfirmed()
+        zoomToCurrentLocationIfConfirmed()
         setMapClick(map)
 
 
     }
-    private fun isFineLocationPermissionGranted() : Boolean = ContextCompat.checkSelfPermission(
+
+    private fun isFineLocationPermissionGranted(): Boolean = ContextCompat.checkSelfPermission(
         (activity as RemindersActivity),
-        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
 
     @SuppressLint("MissingPermission")
     private fun enableMyLocation() {
         if (isFineLocationPermissionGranted()) {
             map.isMyLocationEnabled = true
-        }
-        else {
+        } else {
             ActivityCompat.requestPermissions(
                 (activity as RemindersActivity),
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
@@ -131,7 +124,7 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
         }
     }
 
-    private fun zoomToCurrentLocationIfConfirmed(){
+    private fun zoomToCurrentLocationIfConfirmed() {
         val builder = AlertDialog.Builder(activity)
         builder.setMessage("Do you  you want to zoom current Location ?")
             .setCancelable(false)
@@ -146,9 +139,20 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
         val alert = builder.create()
         alert.show()
     }
-    private fun zoomToCurrentLocation(){
 
+    private fun zoomToCurrentLocation() {
+        val zoomLevel = 15f
+        val location = map.myLocation
+        map.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                    location.getLatitude(),
+                    location.getLongitude(),
+                ), zoomLevel
+            )
+        )
     }
+
     private fun setMapClick(map: GoogleMap) {
         map.setOnMapClickListener { latLng ->
             map.addMarker(
@@ -157,8 +161,6 @@ class SelectLocationFragment : BaseFragment() ,OnMapReadyCallback{
             )
         }
     }
-
-
 
 
 }
