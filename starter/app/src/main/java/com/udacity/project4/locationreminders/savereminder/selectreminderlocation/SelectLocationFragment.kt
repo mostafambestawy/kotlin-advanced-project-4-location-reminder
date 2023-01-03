@@ -63,9 +63,22 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
 
 //        TODO: call this function after the user confirms on the selected location
+
+        binding.submitLocationButton.setOnClickListener {
+            if(selectedLatLng == null){
+                _viewModel.showSnackBar.value = getString(R.string.tap_to_select_location)
+            }
+            else{
+                navigateToSaveLocationFragment()
+            }
+        }
         onLocationSelected()
 
         return binding.root
+    }
+
+    private fun navigateToSaveLocationFragment() {
+        TODO("Not yet implemented")
     }
 
     private fun onLocationSelected() {

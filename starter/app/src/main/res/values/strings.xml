@@ -48,4 +48,5 @@
     <string name="havent_account">Haven\'t account yet, Register Now</string>
     <string name="authentication_try_happened">AuthenticationTryHappened</string>
     <string name="select">Select</string>
+    <string name="tap_to_select_location">Tap to select Location</string>
 </resources>
