@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
@@ -24,7 +23,6 @@ import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
 import com.udacity.project4.databinding.FragmentSelectLocationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
-import com.udacity.project4.locationreminders.reminderslist.ReminderListFragmentDirections
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
@@ -40,6 +38,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     private lateinit var binding: FragmentSelectLocationBinding
     lateinit var map: GoogleMap
     private var selectedLatLng:LatLng? = null
+    private var selectedPoi:PointOfInterest? = null
 
 
     override fun onCreateView(
@@ -93,6 +92,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         //         and navigate back to the previous fragment to save the reminder and add the geofence
         _viewModel.latitude.value = selectedLatLng?.latitude
         _viewModel.longitude.value = selectedLatLng?.longitude
+        _viewModel.selectedPOI.value = selectedPoi
+
         navigateToSaveLocationFragment()
 
     }
@@ -128,6 +129,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         zoomToCurrentLocationIfConfirmed()
         setMapClick(map)
         setMapStyle(map)
+        setPoiClick(map)
 
 
     }
@@ -192,6 +194,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                     .position(latLng)
             )
             selectedLatLng = latLng
+
         }
     }
     private fun setMapStyle(map: GoogleMap) {
@@ -210,6 +213,18 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             }
         } catch (e: Resources.NotFoundException) {
             Log.e("TAG", "Can't find style. Error: ", e)
+        }
+    }
+    private fun setPoiClick(map: GoogleMap) {
+        map.setOnPoiClickListener { poi ->
+            map.clear()
+            selectedLatLng = poi.latLng
+            selectedPoi = poi
+            map.addMarker(
+                MarkerOptions()
+                    .position(poi.latLng)
+                    .title(poi.name)
+            )?.showInfoWindow()
         }
     }
 
