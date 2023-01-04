@@ -23,7 +23,7 @@ import com.udacity.project4.locationreminders.savereminder.selectreminderlocatio
 import kotlinx.android.synthetic.main.activity_reminders.*
 
 private const val REQUEST_TURN_DEVICE_LOCATION_ON = 2
-
+private const val REQUEST_ADD_GEOFENCING = 300
 
 
 /**
