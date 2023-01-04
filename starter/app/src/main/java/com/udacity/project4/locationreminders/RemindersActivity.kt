@@ -21,9 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.udacity.project4.R
 import com.udacity.project4.authentication.AuthenticationActivityViewModel
 import com.udacity.project4.locationreminders.geofence.GeofenceBroadcastReceiver
-import com.udacity.project4.locationreminders.reminderslist.ReminderDataItem
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
-
 import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.REQUEST_ENABLE_MY_LOCATION
 import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.SelectLocationFragment
 import kotlinx.android.synthetic.main.activity_reminders.*
@@ -31,9 +29,9 @@ import org.koin.android.ext.android.inject
 
 private const val REQUEST_TURN_DEVICE_LOCATION_ON = 2
 private const val REQUEST_BUILD_GEOFENCING_REQUEST = 300
-const val ACTION_GEOFENCE_EVENT ="ACTION_GEOFENCE_EVENT"
+const val ACTION_GEOFENCE_EVENT = "ACTION_GEOFENCE_EVENT"
 const val GEOFENCE_RADIUS_IN_METERS = 100f
-const val GEOFENCE_EXPIRATION_IN_MILLISECONDS = 24*60*60*1000L
+const val GEOFENCE_EXPIRATION_IN_MILLISECONDS = 24 * 60 * 60 * 1000L
 
 
 /**
@@ -47,10 +45,15 @@ class RemindersActivity : AppCompatActivity() {
     private val runningQOrLater =
         android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
     var askBackGroundPermissionStep = false
-    val geofencePendingIntent: PendingIntent by lazy {
+    private val geofencePendingIntent: PendingIntent by lazy {
         val intent = Intent(this, GeofenceBroadcastReceiver::class.java)
         intent.action = ACTION_GEOFENCE_EVENT
-        PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT)
+        PendingIntent.getBroadcast(
+            this,
+            0,
+            intent,
+            PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
+        )
     }
     private lateinit var geofencingClient: GeofencingClient
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,7 +95,7 @@ class RemindersActivity : AppCompatActivity() {
             // Permission denied.
             Log.d("TAG", getString(R.string.permission_denied_explanation))
         } else {
-            when(requestCode) {
+            when (requestCode) {
                 0 -> {
                     if (runningQOrLater && askBackGroundPermissionStep) {
                         //requestCode don not care
@@ -106,8 +109,11 @@ class RemindersActivity : AppCompatActivity() {
                 }
 
                 REQUEST_ENABLE_MY_LOCATION -> {
-                    SelectLocationFragment().map.isMyLocationEnabled = true }
-                REQUEST_BUILD_GEOFENCING_REQUEST ->{ addGeoFencingRequest()}
+                    SelectLocationFragment().map.isMyLocationEnabled = true
+                }
+                REQUEST_BUILD_GEOFENCING_REQUEST -> {
+                    addGeoFencingRequest()
+                }
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
@@ -147,11 +153,11 @@ class RemindersActivity : AppCompatActivity() {
     }
 
 
-
     private fun navigateToSelectLocation() {
         findNavController(R.id.nav_host_fragment).navigate(R.id.selectLocationFragment)
 
     }
+
     fun checkPermissionsAddGeofenceRequest() {
         if (foregroundAndBackgroundLocationPermissionApproved()) {
             addGeoFencingRequest()
@@ -159,6 +165,7 @@ class RemindersActivity : AppCompatActivity() {
             requestForegroundAndBackgroundLocationPermissions(REQUEST_BUILD_GEOFENCING_REQUEST)
         }
     }
+
     @SuppressLint("MissingPermission")
     private fun addGeoFencingRequest() {
         val reminderData = saveReminderViewModel.savedReminder!!
@@ -200,6 +207,7 @@ class RemindersActivity : AppCompatActivity() {
 
         }
     }
+
     @TargetApi(29)
     fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
         val foregroundLocationApproved = (
@@ -238,7 +246,7 @@ class RemindersActivity : AppCompatActivity() {
         if (runningQOrLater) askBackGroundPermissionStep = true;
 
         ActivityCompat.requestPermissions(
-           this,
+            this,
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
             requestCode
         )
