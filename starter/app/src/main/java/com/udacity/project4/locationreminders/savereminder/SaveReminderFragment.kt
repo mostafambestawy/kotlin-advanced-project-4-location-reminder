@@ -65,7 +65,7 @@ class SaveReminderFragment : BaseFragment() {
             if (foregroundAndBackgroundLocationPermissionApproved()) {
                 (activity as RemindersActivity).checkDeviceLocationSettingsAndNavigateToSelectLocation()
             } else {
-                requestForegroundAndBackgroundLocationPermissions()
+                requestForegroundAndBackgroundLocationPermissions(0)
             }
 
 
@@ -124,7 +124,7 @@ class SaveReminderFragment : BaseFragment() {
 
 
     @TargetApi(29)
-    private fun requestForegroundAndBackgroundLocationPermissions() {
+    private fun requestForegroundAndBackgroundLocationPermissions(requestCode: Int) {
         if (foregroundAndBackgroundLocationPermissionApproved())
             return
 
@@ -138,11 +138,11 @@ class SaveReminderFragment : BaseFragment() {
          **/
 
         if (runningQOrLater) (activity as RemindersActivity).askBackGroundPermissionStep = true;
-        // resultCode do not care
+
         ActivityCompat.requestPermissions(
             activity as RemindersActivity,
             arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-            0
+            requestCode
         )
 
     }
