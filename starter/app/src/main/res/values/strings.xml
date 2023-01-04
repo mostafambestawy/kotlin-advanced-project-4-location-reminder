@@ -49,4 +49,5 @@
     <string name="authentication_try_happened">AuthenticationTryHappened</string>
     <string name="select">Select</string>
     <string name="tap_to_select_location">Tap to select Location</string>
+    <string name="no_current_loction">No Current Location, Tap My Location Icon On Top of map</string>
 </resources>

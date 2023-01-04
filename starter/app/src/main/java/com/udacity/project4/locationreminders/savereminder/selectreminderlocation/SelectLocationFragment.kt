@@ -181,6 +181,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
         alert.show()
     }
 
+    @SuppressLint("MissingPermission")
     private fun zoomToCurrentLocation() {
         if (map.myLocation != null) {
             val zoomLevel = 15f
@@ -193,6 +194,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                     ), zoomLevel
                 )
             )
+        }
+        else {
+            map?.isMyLocationEnabled = true
+            _viewModel.showSnackBar.value = getString(R.string.no_current_loction)
         }
     }
 

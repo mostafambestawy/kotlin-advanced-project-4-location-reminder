@@ -20,6 +20,7 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
     val selectedPOI = MutableLiveData<PointOfInterest?>()
     val latitude = MutableLiveData<Double?>()
     val longitude = MutableLiveData<Double?>()
+    var savedReminder:ReminderDataItem? = null
 
 
 
@@ -41,7 +42,9 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
      */
     fun validateAndSaveReminder(reminderData: ReminderDataItem) {
         if (validateEnteredData(reminderData)) {
+            savedReminder = reminderData
             saveReminder(reminderData)
+
 
 
         }
@@ -66,7 +69,7 @@ class SaveReminderViewModel(val app: Application, val dataSource: ReminderDataSo
             showLoading.value = false
             showToast.value = app.getString(R.string.reminder_saved)
             navigationCommand.value =
-            NavigationCommand.To(SaveReminderFragmentDirections.actionSaveReminderFragmentToReminderListFragment())
+            NavigationCommand.BackTo(R.id.reminderListFragment)
         }
     }
 
