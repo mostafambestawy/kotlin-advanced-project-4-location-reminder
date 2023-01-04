@@ -58,7 +58,7 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
     // firebase ui auth
-    implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
+    implementation 'com.firebaseui:firebase-ui-auth:7.1.1'
 
     //solve problem firebase email authentication -> Targeting S+ (version 31 and above) requires that one of FLAG_IMMUTABLE or FLAG_MUTABLE be specified when creating a PendingIntent
     implementation 'com.google.android.gms:play-services-auth:20.4.0'
@@ -89,8 +89,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$roomVersion"
     testImplementation project(path: ':app')
     androidTestImplementation project(path: ':app')
-    androidTestImplementation project(path: ':app')
-    androidTestImplementation project(path: ':app')
+
     kapt "androidx.room:room-compiler:$roomVersion"
 
     //Coroutines Dependencies
@@ -144,7 +143,13 @@ dependencies {
     androidTestImplementation "androidx.arch.core:core-testing:2.1.0"
     androidTestImplementation "org.robolectric:annotations:4.3.1"
     androidTestImplementation "androidx.test.espresso:espresso-core:3.5.0"
+    //solve problem : Run Android instrumented tests using Gradle" option was ignored because this module type is not supported yet
+    // exclude module: "protobuf-lite"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:3.5.0"
+    //Android Instrumented Unit test
+
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion"
+
     androidTestImplementation "androidx.test.espresso:espresso-intents:3.5.0"
     androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:3.5.0"
     androidTestImplementation "junit:junit:4.13.2"
@@ -153,8 +158,8 @@ dependencies {
     implementation "androidx.test:core:1.5.0"
     implementation "androidx.fragment:fragment-ktx:1.5.5"
     androidTestImplementation "org.mockito:mockito-core:2.28.1"
-    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:2.28.3"
-    androidTestImplementation('org.koin:koin-test:3.3.0') { exclude group: 'org.mockito' }
+    androidTestImplementation "com.linkedin.dexmaker:dexmaker-mockito:2.28.1"
+    androidTestImplementation("io.insert-koin:koin-test:3.3.0") { exclude group: "org.mockito" }
 
 
 

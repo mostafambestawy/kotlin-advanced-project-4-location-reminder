@@ -5,15 +5,18 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SmallTest;
+import com.udacity.project4.MainCoroutineRule
+import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.runner.RunWith;
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
-import org.junit.After
-import org.junit.Test
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.runTest
+import org.junit.*
 import org.robolectric.annotation.Config
+
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -24,6 +27,8 @@ class RemindersDaoTest {
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
+    @get:Rule
+    var mainCoroutineRule = MainCoroutineRule()
 
     private lateinit var database: RemindersDatabase
     @Before
@@ -38,8 +43,12 @@ class RemindersDaoTest {
 
     @Config(sdk = [29])
     @Test
-    fun addReminder() = {
-
+    fun addReminder() = mainCoroutineRule.runTest{
+    val reminder:ReminderDTO = ReminderDTO("testTitle1","testDescription1","Test Location 1",32.15524,30.3265)
+    val id = reminder.id
+    database.reminderDao().saveReminder(reminder)
+    val savedReminder = database.reminderDao().getReminderById(id)
+        Assert.assertEquals(savedReminder?.id,id)
     }
 //    TODO: Add testing implementation to the RemindersDao.kt
 
