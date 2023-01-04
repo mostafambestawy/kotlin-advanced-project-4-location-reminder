@@ -48,6 +48,6 @@ class RemindersDaoTest {
     val savedReminder = database.reminderDao().getReminderById(id)
         Assert.assertEquals(savedReminder?.id,id)
     }
-//    TODO: Add testing implementation to the RemindersDao.kt
+//    TODODONE: Add testing implementation to the RemindersDao.kt
 
 }
