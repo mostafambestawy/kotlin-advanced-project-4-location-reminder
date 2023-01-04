@@ -14,6 +14,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.*
 import com.udacity.project4.locationreminders.data.dto.Result
 import org.koin.core.context.stopKoin
+import org.robolectric.annotation.Config
 
 @ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
@@ -47,6 +48,7 @@ class SaveReminderViewModelTest {
         stopKoin()
     }
 
+    @Config(sdk = [29])
     @Test
     fun saveReminder() = mainCoroutineRule.runTest{
         val reminder:ReminderDataItem = ReminderDataItem("testTitle2","testDescription2","Test Location 2",32.15524,30.3265)
