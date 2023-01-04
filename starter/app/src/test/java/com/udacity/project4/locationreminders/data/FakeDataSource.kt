@@ -11,8 +11,8 @@ class FakeDataSource : ReminderDataSource {
 //    TODO: Create a fake data source to act as a double to the real data source
 
     override suspend fun getReminders(): Result<List<ReminderDTO>> {
-        return if(fakeReminders.isEmpty()) com.udacity.project4.locationreminders.data.dto.Result.Error("No Reminders")
-        else com.udacity.project4.locationreminders.data.dto.Result.Success(fakeReminders)
+        return if(fakeReminders.isEmpty()) Result.Error("No Reminders")
+        else Result.Success(fakeReminders)
     }
 
     override suspend fun saveReminder(reminder: ReminderDTO) {
@@ -24,7 +24,7 @@ class FakeDataSource : ReminderDataSource {
         return if(reminder != null){
             Result.Success(reminder)
         } else
-            com.udacity.project4.locationreminders.data.dto.Result.Error("reminder not found")
+            Result.Error("reminder not found")
     }
 
     override suspend fun deleteAllReminders() {
