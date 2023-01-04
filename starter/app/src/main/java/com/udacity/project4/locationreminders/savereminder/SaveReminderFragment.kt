@@ -84,7 +84,7 @@ class SaveReminderFragment : BaseFragment() {
                     longitude
                 )
             )
-
+            if(_viewModel.savedReminder != null)
             (activity as RemindersActivity).checkPermissionsAddGeofenceRequest()
 
 
