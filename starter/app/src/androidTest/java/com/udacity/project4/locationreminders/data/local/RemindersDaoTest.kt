@@ -5,17 +5,15 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.SmallTest;
-import com.udacity.project4.MainCoroutineRule
+import com.udacity.project4.locationreminders.MainCoroutineRule
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 
 import org.junit.runner.RunWith;
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi;
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import org.junit.*
-import org.robolectric.annotation.Config
+
 
 
 @ExperimentalCoroutinesApi
@@ -41,7 +39,7 @@ class RemindersDaoTest {
     @After
     fun close_db()  = database.close()
 
-    @Config(sdk = [29])
+
     @Test
     fun addReminder() = mainCoroutineRule.runTest{
     val reminder:ReminderDTO = ReminderDTO("testTitle1","testDescription1","Test Location 1",32.15524,30.3265)
