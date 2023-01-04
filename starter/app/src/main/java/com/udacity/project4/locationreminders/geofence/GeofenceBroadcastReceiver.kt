@@ -27,9 +27,15 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
 
 //TODO: implement the onReceive method to receive the geofencing events at the background
         if (intent.action == ACTION_GEOFENCE_EVENT) {
-
-            GeofenceTransitionsJobIntentService.enqueueWork(context,intent)
-
+            val geofencingEvent = GeofencingEvent.fromIntent(intent)
+            if (geofencingEvent?.hasError() == true) {
+                val errorMessage = errorMessage(context, geofencingEvent.errorCode)
+                Log.e("TAG", errorMessage)
+                return
+            }
+            if (geofencingEvent?.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
+                GeofenceTransitionsJobIntentService.enqueueWork(context, intent)
+            }
 
         }
     }
