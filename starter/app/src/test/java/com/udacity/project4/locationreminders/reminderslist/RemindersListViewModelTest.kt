@@ -29,7 +29,7 @@ class RemindersListViewModelTest {
     private lateinit var remindersListViewModel: RemindersListViewModel
 
     @Before
-    fun initialize()=mainCoroutineRule.runTest{
+    fun initialize() = mainCoroutineRule.runTest{
         /** Warning
         Do not do the following, do not initialize the tasksViewModel with its definition:
         val viewModel = viewModel(repository)

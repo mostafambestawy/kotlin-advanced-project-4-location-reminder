@@ -32,9 +32,9 @@ class AuthenticationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        //         TODONE: Implement the create account and sign in using FirebaseUI, use sign in using email and sign in using Google
+        //         TODODONE: Implement the create account and sign in using FirebaseUI, use sign in using email and sign in using Google
 
-        //          TODONE: If the user was authenticated, send him to RemindersActivity
+        //          TODDOONE: If the user was authenticated, send him to RemindersActivity
 
 
         authenticationActivityViewModel =
