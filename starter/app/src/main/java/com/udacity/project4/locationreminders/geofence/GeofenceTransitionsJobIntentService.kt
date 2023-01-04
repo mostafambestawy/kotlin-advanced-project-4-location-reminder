@@ -29,7 +29,7 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
     companion object {
         private const val JOB_ID = 573
 
-        //        TODO: call this to start the JobIntentService to handle the geofencing transition events
+        //        TODODONE: call this to start the JobIntentService to handle the geofencing transition events
         fun enqueueWork(context: Context, intent: Intent) {
             val geofencingEvent = GeofencingEvent.fromIntent(intent)
             if (geofencingEvent?.hasError() == true) {
@@ -46,9 +46,9 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
     }
 
     override fun onHandleWork(intent: Intent) {
-        //TODO: handle the geofencing transition events and
+        //TODODONE: handle the geofencing transition events and
         // send a notification to the user when he enters the geofence area
-        //TODO call @sendNotification
+        //TODODONE call @sendNotification
         val geofencingEvent = GeofencingEvent.fromIntent(intent)
         if (geofencingEvent?.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER) {
             Log.v("TAG", getString(R.string.geofence_entered))
@@ -59,7 +59,7 @@ class GeofenceTransitionsJobIntentService : JobIntentService(), CoroutineScope {
         }
     }
 
-    //TODO: get the request id of the current geofence
+    //TODODONE: get the request id of the current geofence
     private fun sendNotification(triggeringGeofences: List<Geofence>) {
         val requestId = ""
 

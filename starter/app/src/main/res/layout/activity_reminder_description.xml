@@ -18,16 +18,56 @@
         tools:context=".locationreminders.ReminderDescriptionActivity">
         <!--TODO: add the design of the reminder details-->
 
+
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Reminder Details"
-            android:textSize="@dimen/text_size_large"
+            android:id="@+id/titleTextView"
+            style="@style/reminder_field_textview"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Reminder title"
+            android:text="@{reminderDataItem.title}"
+            />
+
+        <TextView
+            android:id="@+id/descriptionTextView"
+            style="@style/reminder_field_textview"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Reminder Description"
+            android:text="@{reminderDataItem.description}"/>
+
+        <TextView
+            android:id="@+id/locationTextView"
+            style="@style/reminder_field_textview"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Reminder Location"
+            android:text="@{reminderDataItem.location}"/>
+
+        <TextView
+            android:id="@+id/latTextView"
+            style="@style/reminder_field_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            tools:text="Reminder Latitude"
+            android:text="@{reminderDataItem.latitude.toString()}"/>
+
+        <TextView
+            android:id="@+id/lngTextView"
+            style="@style/reminder_field_textview"
+            tools:text="Reminder Longitude"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{reminderDataItem.longitude.toString()}"/>
 
     </LinearLayout>
 </layout>
