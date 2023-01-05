@@ -12,6 +12,7 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.robolectric.annotation.Config
+import com.udacity.project4.locationreminders.data.dto.Result
 
 @RunWith(AndroidJUnit4::class)
 @ExperimentalCoroutinesApi
@@ -58,6 +59,24 @@ class RemindersListViewModelTest {
         }
         remindersListViewModel.loadReminders()
         Assert.assertEquals(remindersListViewModel.remindersList.value?.size,5)
+    }
+
+    @Config(sdk = [29])
+    @Test
+    fun getReminders_Error() = mainCoroutineRule.runTest{
+        val reminders:List<ReminderDTO> = listOf(
+            ReminderDTO("testTitle1","testDescription1","Test Location 1",32.15524,30.3265),
+            ReminderDTO("testTitle2","testDescription2","Test Location 2",32.15524,30.3265),
+            ReminderDTO("testTitle3","testDescription3","Test Location 3",32.15524,30.3265),
+            ReminderDTO("testTitle4","testDescription4","Test Location 4",32.15524,30.3265),
+            ReminderDTO("testTitle5","testDescription5","Test Location 5",32.15524,30.3265))
+        for(reminder in reminders) {
+            fakeDataSource.saveReminder(reminder)
+        }
+        fakeDataSource.shouldReturnError = true
+        remindersListViewModel.loadReminders()
+        val errorMessage = remindersListViewModel.showSnackBar.value
+        Assert.assertEquals(errorMessage,"Fake Error")
     }
     //TODODONE: provide testing to the RemindersListViewModel and its live data objects
 
