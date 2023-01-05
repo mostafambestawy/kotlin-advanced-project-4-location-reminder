@@ -3,6 +3,7 @@ package com.udacity.project4.locationreminders
 import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
+import android.app.AlertDialog
 import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentSender
@@ -97,6 +98,7 @@ class RemindersActivity : AppCompatActivity() {
         ) {
             // Permission denied.
             Log.d("TAG", getString(R.string.permission_denied_explanation))
+
         } else {
             when (requestCode) {
                 0 -> {
@@ -263,6 +265,21 @@ class RemindersActivity : AppCompatActivity() {
             requestCode
         )
 
+    }
+    fun confirmDialog(message: String, action: () -> Unit) {
+        val builder = AlertDialog.Builder(this)
+        builder.setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("Yes") { _, _ ->
+                // Delete selected note from database
+                action()
+            }
+            .setNegativeButton("No") { dialog, _ ->
+                // Dismiss the dialog
+                dialog.dismiss()
+            }
+        val alert = builder.create()
+        alert.show()
     }
 
 }

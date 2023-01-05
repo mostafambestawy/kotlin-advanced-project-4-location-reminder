@@ -73,7 +73,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
             if (selectedLatLng == null) {
                 _viewModel.showSnackBar.value = getString(R.string.tap_to_select_location)
             } else {
-                confirmDialog("Sure With the Selected Location") { onLocationSelected() }
+                (activity as RemindersActivity).confirmDialog("Sure With the Selected Location") { onLocationSelected() }
             }
         }
 
@@ -162,24 +162,10 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
     private fun zoomToCurrentLocationIfConfirmed() {
-        confirmDialog("Do you  you want to zoom current Location ?") { zoomToCurrentLocation() }
+        (activity as RemindersActivity).confirmDialog("Do you  you want to zoom current Location ?") { zoomToCurrentLocation() }
     }
 
-    private fun confirmDialog(message: String, action: () -> Unit) {
-        val builder = AlertDialog.Builder(activity)
-        builder.setMessage(message)
-            .setCancelable(false)
-            .setPositiveButton("Yes") { _, _ ->
-                // Delete selected note from database
-                action()
-            }
-            .setNegativeButton("No") { dialog, _ ->
-                // Dismiss the dialog
-                dialog.dismiss()
-            }
-        val alert = builder.create()
-        alert.show()
-    }
+
 
     @SuppressLint("MissingPermission")
     private fun zoomToCurrentLocation() {
