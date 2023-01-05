@@ -33,9 +33,9 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                 Log.e("TAG", errorMessage)
                 return
             }
-            //if ((geofencingEvent?.geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) or (geofencingEvent?.geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER)) {
+            if (geofencingEvent?.geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
                 GeofenceTransitionsJobIntentService.enqueueWork(context, intent)
-            //}
+            }
 
         }
     }

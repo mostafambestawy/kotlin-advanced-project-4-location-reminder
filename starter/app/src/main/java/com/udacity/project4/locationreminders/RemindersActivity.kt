@@ -193,16 +193,15 @@ class RemindersActivity : AppCompatActivity() {
             //  best practices for geofencing
             //  Use the dwell transition type to reduce alert spam
             .setTransitionTypes(
-                //Geofence.GEOFENCE_TRANSITION_DWELL or
-                Geofence.GEOFENCE_TRANSITION_ENTER
+                Geofence.GEOFENCE_TRANSITION_DWELL
             )
-            //.setLoiteringDelay(GEOFENCE_LOITERING_DELAY_IN_MILLISECONDS)
+            .setLoiteringDelay(GEOFENCE_LOITERING_DELAY_IN_MILLISECONDS)
             .build()
 
 
         //geofenceList.add(geofence)
         val geofencingRequest = GeofencingRequest.Builder()
-            .setInitialTrigger(Geofence.GEOFENCE_TRANSITION_DWELL or Geofence.GEOFENCE_TRANSITION_ENTER)
+            .setInitialTrigger(Geofence.GEOFENCE_TRANSITION_DWELL)
             .addGeofences(listOf(geofence))
             .build()
 
