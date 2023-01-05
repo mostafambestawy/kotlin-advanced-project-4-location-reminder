@@ -66,16 +66,13 @@ class ReminderListFragmentTest {
         //GIVEN
         val mockedNavController = mock(NavController::class.java)
 
-        var scenario:FragmentScenario<ReminderListFragment> =
+        val scenario:FragmentScenario<ReminderListFragment> =
             launchFragmentInContainer<ReminderListFragment>(Bundle(), R.style.AppTheme)
         scenario.onFragment {
             Navigation.setViewNavController(it.view!!, mockedNavController)
         }
         //WHEN
-        scenario.apply {
-            onView(withId(R.id.addReminderFAB)).perform(click())
-        }
-
+        onView(withId(R.id.addReminderFAB)).perform(click())
         //THEN
         verify(mockedNavController).navigate(ReminderListFragmentDirections.toSaveReminder())
 

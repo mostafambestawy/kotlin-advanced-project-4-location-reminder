@@ -36,7 +36,7 @@ const val ACTION_GEOFENCE_EVENT = "ACTION_GEOFENCE_EVENT"
 const val GEOFENCE_RADIUS_IN_METERS = 100f
 const val GEOFENCE_EXPIRATION_IN_MILLISECONDS = 24 * 60 * 60 * 1000L
 
-//for testing low value
+//for testing make GEOFENCE_LOITERING_DELAY_IN_MILLISECONDS low value
 const val GEOFENCE_LOITERING_DELAY_IN_MILLISECONDS = 1000
 
 
@@ -63,7 +63,7 @@ class RemindersActivity : AppCompatActivity() {
     }
     private lateinit var geofencingClient: GeofencingClient
 
-    //private lateinit var geofenceList:ArrayList<Geofence>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reminders)
