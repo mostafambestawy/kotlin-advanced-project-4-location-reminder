@@ -8,7 +8,9 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -33,6 +35,7 @@ private const val REQUEST_BUILD_GEOFENCING_REQUEST = 300
 const val ACTION_GEOFENCE_EVENT = "ACTION_GEOFENCE_EVENT"
 const val GEOFENCE_RADIUS_IN_METERS = 100f
 const val GEOFENCE_EXPIRATION_IN_MILLISECONDS = 24 * 60 * 60 * 1000L
+
 //for testing low value
 const val GEOFENCE_LOITERING_DELAY_IN_MILLISECONDS = 1000
 
@@ -55,10 +58,11 @@ class RemindersActivity : AppCompatActivity() {
             this,
             0,
             intent,
-             PendingIntent.FLAG_UPDATE_CURRENT
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
     }
     private lateinit var geofencingClient: GeofencingClient
+
     //private lateinit var geofenceList:ArrayList<Geofence>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,6 +102,10 @@ class RemindersActivity : AppCompatActivity() {
         ) {
             // Permission denied.
             Log.d("TAG", getString(R.string.permission_denied_explanation))
+
+            confirmDialog(getString(R.string.location_permisssions_required)) {
+                launchLocationSettingsIntent()
+            }
 
         } else {
             when (requestCode) {
@@ -182,11 +190,12 @@ class RemindersActivity : AppCompatActivity() {
                 GEOFENCE_RADIUS_IN_METERS
             )
             .setExpirationDuration(GEOFENCE_EXPIRATION_IN_MILLISECONDS)
-                //  best practices for geofencing
-                //  Use the dwell transition type to reduce alert spam
+            //  best practices for geofencing
+            //  Use the dwell transition type to reduce alert spam
             .setTransitionTypes(
                 //Geofence.GEOFENCE_TRANSITION_DWELL or
-                        Geofence.GEOFENCE_TRANSITION_ENTER)
+                Geofence.GEOFENCE_TRANSITION_ENTER
+            )
             //.setLoiteringDelay(GEOFENCE_LOITERING_DELAY_IN_MILLISECONDS)
             .build()
 
@@ -266,6 +275,7 @@ class RemindersActivity : AppCompatActivity() {
         )
 
     }
+
     fun confirmDialog(message: String, action: () -> Unit) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(message)
@@ -280,6 +290,13 @@ class RemindersActivity : AppCompatActivity() {
             }
         val alert = builder.create()
         alert.show()
+    }
+
+    private fun launchLocationSettingsIntent() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+        val uri: Uri = Uri.fromParts("package", packageName, null)
+        intent.data = uri
+        startActivity(intent)
     }
 
 }
