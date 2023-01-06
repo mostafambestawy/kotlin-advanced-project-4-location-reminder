@@ -8,6 +8,7 @@ import androidx.test.filters.MediumTest
 import com.udacity.project4.locationreminders.MainCoroutineRule
 import com.udacity.project4.locationreminders.data.dto.ReminderDTO
 import com.udacity.project4.locationreminders.data.dto.Result
+import com.udacity.project4.util.EspressoIdlingResource.wrapEspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
@@ -46,11 +47,14 @@ class RemindersLocalRepositoryTest {
 
     @Test
     fun saveReminder() = mainCoroutineRule.runTest {
-        val reminder:ReminderDTO = ReminderDTO("testTitle1","testDescription1","Test Location 1",32.15524,30.3265)
-        val id = reminder.id
-        repository.saveReminder(reminder)
-        val savedReminder = repository.getReminder(id) as Result.Success<ReminderDTO>
-        Assert.assertEquals(savedReminder.data.id,id)
+        wrapEspressoIdlingResource {
+            val reminder: ReminderDTO =
+                ReminderDTO("testTitle1", "testDescription1", "Test Location 1", 32.15524, 30.3265)
+            val id = reminder.id
+            repository.saveReminder(reminder)
+            val savedReminder = repository.getReminder(id) as Result.Success<ReminderDTO>
+            Assert.assertEquals(savedReminder.data.id, id)
+        }
     }
 
 //    TODODONE: Add testing implementation to the RemindersLocalRepository.kt
