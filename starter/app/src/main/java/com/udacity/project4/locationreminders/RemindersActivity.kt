@@ -296,6 +296,7 @@ class RemindersActivity : AppCompatActivity() {
         val uri: Uri = Uri.fromParts("package", packageName, null)
         intent.data = uri
         startActivity(intent)
-    }
+        // TODO: use navigation
+     }
 
 }

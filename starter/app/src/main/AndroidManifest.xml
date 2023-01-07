@@ -19,6 +19,10 @@
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- for testing -->
+    <uses-permission android:name="android.permission.SET_ANIMATION_SCALE"
+        tools:ignore="ProtectedPermissions" />
+
     <application
         android:name=".MyApp"
         android:allowBackup="true"

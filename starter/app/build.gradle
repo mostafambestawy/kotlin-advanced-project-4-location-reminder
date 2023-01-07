@@ -31,6 +31,9 @@ android {
         includeAndroidResources = true
         returnDefaultValues = true
     }
+    testOptions {
+        animationsDisabled = true
+    }
     //https://stackoverflow.com/questions/49512629/default-interface-methods-are-only-supported-starting-with-android-7-0-nougat
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -39,6 +42,8 @@ android {
 
     testOptions.unitTests {
         includeAndroidResources = true
+
+
     }
     //dataBinding {
     //    enabled = true

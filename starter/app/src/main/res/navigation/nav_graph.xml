@@ -38,6 +38,8 @@
     <activity
         android:id="@+id/authenticationActivity"
         android:name="com.udacity.project4.authentication.AuthenticationActivity"
-        android:label="AuthenticationActivity" />
+        android:label="AuthenticationActivity">
+
+    </activity>
 
 </navigation>

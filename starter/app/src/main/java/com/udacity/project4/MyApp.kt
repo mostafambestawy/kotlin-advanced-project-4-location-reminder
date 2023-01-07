@@ -14,7 +14,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 
 
 class MyApp : Application() {
-
+    var testing = false
     override fun onCreate() {
         super.onCreate()
 
@@ -39,6 +39,9 @@ class MyApp : Application() {
             }
             single { RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(this@MyApp) }
+            single {
+                testing
+            }
         }
 
         startKoin {

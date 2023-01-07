@@ -7,15 +7,18 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
+import com.udacity.project4.MyApp
 import com.udacity.project4.R
 import com.udacity.project4.databinding.ActivityAuthenticationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
 
 import com.udacity.project4.utils.enums.AuthenticationStatus
 import com.udacity.project4.utils.enums.LoginRegistrationType
+import kotlin.properties.Delegates
 
 /**
  * This class should be the starting point of the app, It asks the users to sign in / register, and redirects the
@@ -28,7 +31,7 @@ class AuthenticationActivity : AppCompatActivity() {
 
     private lateinit var authenticationActivityViewModel: AuthenticationActivityViewModel
     private lateinit var binding: ActivityAuthenticationBinding
-    private var testing = false
+    private var testing by Delegates.notNull<Boolean>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,7 +48,8 @@ class AuthenticationActivity : AppCompatActivity() {
         binding.authenticationViewModel = authenticationActivityViewModel
         binding.lifecycleOwner = this
 
-        testing = intent.getBooleanExtra("testing",false)
+        //testing = intent.getBooleanExtra("testing",false)
+        testing = (applicationContext as MyApp).testing
         authenticationActivityViewModel.testing = testing
 
         fun updateRegisterUI() {
@@ -62,15 +66,17 @@ class AuthenticationActivity : AppCompatActivity() {
             authenticationActivityViewModel.type.value = LoginRegistrationType.Login
         }
 
-        fun startRemindersActivity(testing: Boolean = false) {
-            val intent = Intent(this, RemindersActivity::class.java).putExtra("testing",testing)
+        fun navigateToRemindersActivity() {
+            //findNavController(R.id.nav_graph).navigate(R.id.mainActivity)
+            val intent = Intent(this, RemindersActivity::class.java)
+            //TODO use navigation
             startActivity(intent)
         }
 
         authenticationActivityViewModel.authenticationStatus.observe(this) {
             if (it != null) {
                 when (it) {
-                    AuthenticationStatus.Authenticated -> startRemindersActivity()
+                    AuthenticationStatus.Authenticated -> navigateToRemindersActivity()
                     AuthenticationStatus.UnAuthenticated -> {}
 
                 }
@@ -80,7 +86,7 @@ class AuthenticationActivity : AppCompatActivity() {
             if (it) {
                 if(authenticationActivityViewModel.testing)
                 {
-                    startRemindersActivity(true)
+                    navigateToRemindersActivity()
                 }
                 else {
                     launchSignInFlow();
