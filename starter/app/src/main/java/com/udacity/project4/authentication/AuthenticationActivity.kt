@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -29,6 +28,7 @@ class AuthenticationActivity : AppCompatActivity() {
 
     private lateinit var authenticationActivityViewModel: AuthenticationActivityViewModel
     private lateinit var binding: ActivityAuthenticationBinding
+    private var testing = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -37,11 +37,17 @@ class AuthenticationActivity : AppCompatActivity() {
         //          TODDOONE: If the user was authenticated, send him to RemindersActivity
 
 
+
         authenticationActivityViewModel =
             ViewModelProvider(this)[AuthenticationActivityViewModel::class.java]
+
         binding = ActivityAuthenticationBinding.inflate(layoutInflater)
         binding.authenticationViewModel = authenticationActivityViewModel
         binding.lifecycleOwner = this
+
+        testing = intent.getBooleanExtra("testing",false)
+        authenticationActivityViewModel.testing = testing
+
         fun updateRegisterUI() {
             binding.title.text = getString(R.string.register_new_user)
             binding.loginRegisterButton.text = getString(R.string.register_now)
@@ -56,8 +62,9 @@ class AuthenticationActivity : AppCompatActivity() {
             authenticationActivityViewModel.type.value = LoginRegistrationType.Login
         }
 
-        fun startRemindersActivity() {
-            startActivity(Intent(this, RemindersActivity::class.java))
+        fun startRemindersActivity(testing: Boolean = false) {
+            val intent = Intent(this, RemindersActivity::class.java).putExtra("testing",testing)
+            startActivity(intent)
         }
 
         authenticationActivityViewModel.authenticationStatus.observe(this) {
@@ -71,8 +78,15 @@ class AuthenticationActivity : AppCompatActivity() {
         }
         authenticationActivityViewModel.loginRegisterEvent.observe(this) {
             if (it) {
+                if(authenticationActivityViewModel.testing)
+                {
+                    startRemindersActivity(true)
+                }
+                else {
+                    launchSignInFlow();
+                }
                 authenticationActivityViewModel.onLoginRegister()
-                launchSignInFlow();
+
             }
         }
         authenticationActivityViewModel.typeEvent.observe(this) {

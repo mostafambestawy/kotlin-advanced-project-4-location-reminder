@@ -49,7 +49,7 @@ import org.mockito.Mockito.verify
 class ReminderListFragmentTest : KoinTest {
     private lateinit var reminderDataSource: ReminderDataSource
 
-//    TODO: test the navigation of the fragments.
+//    TODODONE: test the navigation of the fragments.
     /** live data testing os hat postValue and setValue not crashed
      * if not called from main thread **/
     /*@get:Rule
@@ -136,7 +136,7 @@ class ReminderListFragmentTest : KoinTest {
 
     }
 
-    //    TODO: test the displayed data on the UI.
+    //    TODODONE: test the displayed data on the UI.
     @Test
     fun testUI(): Unit = runBlocking {
         //GIVEN
@@ -165,7 +165,7 @@ class ReminderListFragmentTest : KoinTest {
     }
 
 
-    //    TODO: add testing for the error messages.
+    //    TODODONE: add testing for the error messages.
     @Test
     fun testClickSaveForTitleMissingReminder(): Unit = runBlocking {
         //GIVEN

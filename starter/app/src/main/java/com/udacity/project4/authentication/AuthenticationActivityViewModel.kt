@@ -6,16 +6,22 @@ import androidx.lifecycle.map
 import com.udacity.project4.utils.enums.AuthenticationStatus
 import com.udacity.project4.utils.enums.LoginRegistrationType
 
-class AuthenticationActivityViewModel:ViewModel() {
+class AuthenticationActivityViewModel(mTesting: Boolean = false) : ViewModel() {
+
     val type: MutableLiveData<LoginRegistrationType> =
         MutableLiveData(LoginRegistrationType.Registration)
 
+    var testing = mTesting
+
     val authenticationStatus = FirebaseUserLiveData().map {
-        if (it != null) {
-            AuthenticationStatus.Authenticated
-        }  else{
-            AuthenticationStatus.UnAuthenticated
+        if (!testing) {
+            if (it != null) {
+                AuthenticationStatus.Authenticated
+            } else {
+                AuthenticationStatus.UnAuthenticated
+            }
         }
+        else {  AuthenticationStatus.Authenticated}
     }
 
     fun toggleType() {
@@ -25,7 +31,6 @@ class AuthenticationActivityViewModel:ViewModel() {
             else -> {}
         }
     }
-
 
 
     var loginRegisterEvent = MutableLiveData(false)
@@ -41,15 +46,17 @@ class AuthenticationActivityViewModel:ViewModel() {
 
     private fun setLoginType() {
         type.value = LoginRegistrationType.Login
-        typeEvent. value = true
+        typeEvent.value = true
     }
+
     var typeEvent = MutableLiveData(false)
 
     private fun setRegistrationType() {
         type.value = LoginRegistrationType.Registration
         typeEvent.value = true;
     }
-    fun  onTypeChanged(){
+
+    fun onTypeChanged() {
         typeEvent.value = false
     }
 }

@@ -24,7 +24,7 @@
             app:layout_constraintTop_toTopOf="parent"
             android:text="@string/select"
             />
-        <!--TODO: Add the map fragment for the user to select the location-->
+        <!--TODODONE: Add the map fragment for the user to select the location-->
         <fragment
             android:id="@+id/mapFragment"
             android:layout_width="match_parent"
