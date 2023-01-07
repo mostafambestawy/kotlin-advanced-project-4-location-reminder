@@ -40,6 +40,8 @@
 
         <TextView
             android:id="@+id/selectLocation"
+            android:paddingHorizontal="1dp"
+            android:layout_margin="1dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -55,7 +57,8 @@
 
         <TextView
             android:id="@+id/selectedLocation"
-            android:padding="1dp"
+            android:paddingHorizontal="1dp"
+            android:layout_margin="1dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_normal"
@@ -70,6 +73,7 @@
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/saveReminder"
+            android:padding="1dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_normal"

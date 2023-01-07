@@ -153,13 +153,13 @@ class ReminderListFragmentTest : KoinTest {
         dataBindingIdlingResource.monitorFragment(scenario)
 
         //THEN
-        onView(withId(R.id.title)).check(matches(isDisplayed()))
-        onView(withId(R.id.description)).check(matches(isDisplayed()))
-        onView(withId(R.id.location)).check(matches(isDisplayed()))
+        onView(withId(R.id.reminderDisplayedTitle)).check(matches(isDisplayed()))
+        onView(withId(R.id.reminderDisplayedDescription)).check(matches(isDisplayed()))
+        onView(withId(R.id.reminderDisplayedLocation)).check(matches(isDisplayed()))
 
-        onView(withId(R.id.title)).check(matches(withText(reminder.title)))
-        onView(withId(R.id.description)).check(matches(withText(reminder.description)))
-        onView(withId(R.id.location)).check(matches(withText(reminder.location)))
+        onView(withId(R.id.reminderDisplayedTitle)).check(matches(withText(reminder.title)))
+        onView(withId(R.id.reminderDisplayedDescription)).check(matches(withText(reminder.description)))
+        onView(withId(R.id.reminderDisplayedLocation)).check(matches(withText(reminder.location)))
 
 
     }

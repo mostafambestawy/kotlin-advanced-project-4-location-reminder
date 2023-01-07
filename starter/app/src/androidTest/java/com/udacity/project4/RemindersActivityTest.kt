@@ -8,6 +8,7 @@ import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -22,9 +23,7 @@ import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.EspressoIdlingResource
 import com.udacity.project4.util.monitorActivity
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -117,40 +116,46 @@ class RemindersActivityTest :
         IdlingRegistry.getInstance().unregister(dataBindingIdlingResource)
     }
 
-    //    TODO: add End to End testing to the app
+    //    TODODONE: add End to End testing to the app
     @Test
     fun addReminder(): Unit = runBlocking {
 
         //GIVEN
-
+        /** start app and bypass login logic**/
         val scenario =
             ActivityScenario.launch<AuthenticationActivity>(AuthenticationActivity::class.java)
-
         dataBindingIdlingResource.monitorActivity(scenario)
         //THEN
-
         onView(withId(R.id.remindersListLayout)).check(ViewAssertions.matches(isDisplayed()))
 
-
+        /** tap addReminderFAB **/
         //WHEN
         onView(withId(R.id.addReminderFAB)).perform(click())
         //THEN
         onView(withId(R.id.saveReminderLayout)).check(ViewAssertions.matches(isDisplayed()))
 
-
+        /** type in title ,description and tap selectLocation **/
         //WHEN
         onView(withId(R.id.reminderTitle)).perform(ViewActions.replaceText("testTitle1"))
         onView(withId(R.id.reminderDescription)).perform(ViewActions.replaceText("testDescription1"))
-        onView(withId(R.id.selectedLocation)).perform(click())
-
+        onView(withId(R.id.selectLocation)).perform(click())
         //THEN
         onView(withId(R.id.selectLocationLayout)).check(ViewAssertions.matches(isDisplayed()))
 
+        /** select arbitrary location and submit selected location **/
+        //WHEN
+        onView(withId(R.id.mapFragment)).perform(click())
+        onView(withId(R.id.submitLocationButton)).perform(click())
+        //THEN
+        onView(withId(R.id.saveReminderLayout)).check(ViewAssertions.matches(isDisplayed()))
 
+        /** tap saveReminder **/
+        //WHEN
+        onView(withId(R.id.saveReminder)).perform(click())
+        //THEN
+        onView(withId(R.id.reminderDisplayedTitle)).check(ViewAssertions.matches(ViewMatchers.withText("testTitle1")))
+        onView(withId(R.id.reminderDisplayedDescription)).check(ViewAssertions.matches(ViewMatchers.withText("testDescription1")))
 
-        withContext(Dispatchers.IO) {
-            Thread.sleep(3000)
-        }
 
     }
 }
