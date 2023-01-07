@@ -21,6 +21,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.*
 import com.google.android.material.snackbar.Snackbar
+import com.udacity.project4.MyApp
 import com.udacity.project4.R
 import com.udacity.project4.authentication.AuthenticationActivityViewModel
 import com.udacity.project4.locationreminders.geofence.GeofenceBroadcastReceiver
@@ -29,6 +30,7 @@ import com.udacity.project4.locationreminders.savereminder.selectreminderlocatio
 import com.udacity.project4.locationreminders.savereminder.selectreminderlocation.SelectLocationFragment
 import kotlinx.android.synthetic.main.activity_reminders.*
 import org.koin.android.ext.android.inject
+import kotlin.properties.Delegates
 
 private const val REQUEST_TURN_DEVICE_LOCATION_ON = 2
 private const val REQUEST_BUILD_GEOFENCING_REQUEST = 300
@@ -62,7 +64,7 @@ class RemindersActivity : AppCompatActivity() {
         )
     }
     private lateinit var geofencingClient: GeofencingClient
-
+    private var testing by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +75,8 @@ class RemindersActivity : AppCompatActivity() {
 
 
         geofencingClient = LocationServices.getGeofencingClient(this)
+
+        testing = (applicationContext as MyApp).testing
 
 
     }
@@ -276,19 +280,24 @@ class RemindersActivity : AppCompatActivity() {
     }
 
     fun confirmDialog(message: String, action: () -> Unit) {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage(message)
-            .setCancelable(false)
-            .setPositiveButton("Yes") { _, _ ->
-                // Delete selected note from database
-                action()
-            }
-            .setNegativeButton("No") { dialog, _ ->
-                // Dismiss the dialog
-                dialog.dismiss()
-            }
-        val alert = builder.create()
-        alert.show()
+        if(testing) {
+            action()
+        }
+        else {
+            val builder = AlertDialog.Builder(this)
+            builder.setMessage(message)
+                .setCancelable(false)
+                .setPositiveButton("Yes") { _, _ ->
+                    // Delete selected note from database
+                    action()
+                }
+                .setNegativeButton("No") { dialog, _ ->
+                    // Dismiss the dialog
+                    dialog.dismiss()
+                }
+            val alert = builder.create()
+            alert.show()
+        }
     }
 
     private fun launchLocationSettingsIntent() {

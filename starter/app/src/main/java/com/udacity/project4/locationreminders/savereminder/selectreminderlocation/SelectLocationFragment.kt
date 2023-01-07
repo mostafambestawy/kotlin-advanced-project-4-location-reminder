@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.udacity.project4.MyApp
 import com.udacity.project4.R
 import com.udacity.project4.base.BaseFragment
 import com.udacity.project4.base.NavigationCommand
@@ -28,6 +29,7 @@ import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 import java.math.RoundingMode
 import java.text.DecimalFormat
+import kotlin.properties.Delegates
 
 
 const val REQUEST_ENABLE_MY_LOCATION = 10
@@ -41,6 +43,7 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     lateinit var map: GoogleMap
     private var selectedLatLng: LatLng? = null
     private var selectedPoi: PointOfInterest? = null
+    private var testing = false
 
 
     override fun onCreateView(
@@ -51,6 +54,8 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
         binding.viewModel = _viewModel
         binding.lifecycleOwner = this
+
+        testing = (activity?.applicationContext as MyApp).testing
 
         setHasOptionsMenu(true)
         setDisplayHomeAsUpEnabled(true)
