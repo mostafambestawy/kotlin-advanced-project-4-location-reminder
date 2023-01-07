@@ -12,7 +12,6 @@ import org.junit.*
 import org.junit.runner.RunWith
 import org.koin.core.context.stopKoin
 import org.robolectric.annotation.Config
-import com.udacity.project4.locationreminders.data.dto.Result
 import kotlinx.coroutines.test.pauseDispatcher
 import kotlinx.coroutines.test.resumeDispatcher
 
