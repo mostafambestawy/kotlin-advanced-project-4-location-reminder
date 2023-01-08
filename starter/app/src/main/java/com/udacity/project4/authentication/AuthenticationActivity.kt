@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.firebase.auth.FirebaseAuth
@@ -15,7 +14,6 @@ import com.udacity.project4.MyApp
 import com.udacity.project4.R
 import com.udacity.project4.databinding.ActivityAuthenticationBinding
 import com.udacity.project4.locationreminders.RemindersActivity
-
 import com.udacity.project4.utils.enums.AuthenticationStatus
 import com.udacity.project4.utils.enums.LoginRegistrationType
 import kotlin.properties.Delegates
