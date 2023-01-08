@@ -215,7 +215,7 @@ class RemindersActivity : AppCompatActivity() {
                 saveReminderViewModel.savedReminder = null
                 Snackbar.make(
                     findViewById(R.id.nav_host_fragment),
-                    "Geofencing added for the reminder",
+                    getString(R.string.geofence_added),
                     Snackbar.LENGTH_LONG
                 ).show()
             }

@@ -52,4 +52,5 @@
     <string name="no_current_loction">No Current Location, Tap My Location Icon On Top of map</string>
     <string name="unknown_geofence_error">Unknown Geofence Error</string>
     <string name="location_permisssions_required">Location Permissions are required so that app can work properly, Do you want to Enable Location Permissions?</string>
+    <string name="geofence_added">Geofencing added for the reminder</string>
 </resources>

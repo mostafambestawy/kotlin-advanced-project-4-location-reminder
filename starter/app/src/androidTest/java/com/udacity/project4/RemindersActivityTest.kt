@@ -7,14 +7,14 @@ import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.assertion.ViewAssertions
+import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers
-import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
-import androidx.test.espresso.matcher.ViewMatchers.withId
+import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
 import com.udacity.project4.authentication.AuthenticationActivity
 import com.udacity.project4.authentication.AuthenticationActivityViewModel
+import com.udacity.project4.locationreminders.RemindersActivity
 import com.udacity.project4.locationreminders.data.ReminderDataSource
 import com.udacity.project4.locationreminders.data.local.LocalDB
 import com.udacity.project4.locationreminders.data.local.RemindersLocalRepository
@@ -126,13 +126,13 @@ class RemindersActivityTest :
             ActivityScenario.launch<AuthenticationActivity>(AuthenticationActivity::class.java)
         dataBindingIdlingResource.monitorActivity(scenario)
         //THEN
-        onView(withId(R.id.remindersListLayout)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.remindersListLayout)).check(matches(isDisplayed()))
 
         /** tap addReminderFAB **/
         //WHEN
         onView(withId(R.id.addReminderFAB)).perform(click())
         //THEN
-        onView(withId(R.id.saveReminderLayout)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.saveReminderLayout)).check(matches(isDisplayed()))
 
         /** type in title ,description and tap selectLocation **/
         //WHEN
@@ -140,22 +140,47 @@ class RemindersActivityTest :
         onView(withId(R.id.reminderDescription)).perform(ViewActions.replaceText("testDescription1"))
         onView(withId(R.id.selectLocation)).perform(click())
         //THEN
-        onView(withId(R.id.selectLocationLayout)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.selectLocationLayout)).check(matches(isDisplayed()))
 
         /** select arbitrary location and submit selected location **/
         //WHEN
         onView(withId(R.id.mapFragment)).perform(click())
         onView(withId(R.id.submitLocationButton)).perform(click())
         //THEN
-        onView(withId(R.id.saveReminderLayout)).check(ViewAssertions.matches(isDisplayed()))
+        onView(withId(R.id.saveReminderLayout)).check(matches(isDisplayed()))
 
         /** tap saveReminder **/
         //WHEN
         onView(withId(R.id.saveReminder)).perform(click())
         //THEN
-        onView(withId(R.id.reminderDisplayedTitle)).check(ViewAssertions.matches(ViewMatchers.withText("testTitle1")))
-        onView(withId(R.id.reminderDisplayedDescription)).check(ViewAssertions.matches(ViewMatchers.withText("testDescription1")))
+        onView(withId(R.id.reminderDisplayedTitle)).check(matches(ViewMatchers.withText("testTitle1")))
+        onView(withId(R.id.reminderDisplayedDescription)).check(matches(ViewMatchers.withText("testDescription1")))
 
 
     }
+    @Test
+    fun errEnterTitleSnackBar(): Unit = runBlocking {
+        //GIVEN
+        /** start app and bypass login logic**/
+        val scenario =
+            ActivityScenario.launch<RemindersActivity>(RemindersActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(scenario)
+        //THEN
+        onView(withId(R.id.remindersListLayout)).check(matches(isDisplayed()))
+
+        /** tap addReminderFAB **/
+        //WHEN
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        //THEN
+        onView(withId(R.id.saveReminderLayout)).check(matches(isDisplayed()))
+
+        /** tap saveReminder **/
+        //WHEN
+        onView(withId(R.id.saveReminder)).perform(click())
+        //THEN
+        //https://stackoverflow.com/questions/33111882/testing-snackbar-show-with-espresso
+        onView(withId(com.google.android.material.R.id.snackbar_text))
+            .check(matches(withText(appContext.getString(R.string.err_enter_title))))
+    }
+
 }
