@@ -3,7 +3,6 @@ package com.udacity.project4.locationreminders.savereminder.selectreminderlocati
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.os.Bundle
@@ -29,7 +28,6 @@ import com.udacity.project4.utils.setDisplayHomeAsUpEnabled
 import org.koin.android.ext.android.inject
 import java.math.RoundingMode
 import java.text.DecimalFormat
-import kotlin.properties.Delegates
 
 
 const val REQUEST_ENABLE_MY_LOCATION = 10
@@ -107,9 +105,9 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
 
     }
 
-    private fun roundDouble(double: Double?):String{
+    private fun roundDouble(double: Double?): String {
         val decimalFormat = DecimalFormat("#.######")
-        decimalFormat.roundingMode =  RoundingMode.DOWN
+        decimalFormat.roundingMode = RoundingMode.DOWN
         return decimalFormat.format(double)
     }
 
@@ -171,7 +169,6 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
     }
 
 
-
     @SuppressLint("MissingPermission")
     private fun zoomToCurrentLocation() {
         if (map.myLocation != null) {
@@ -185,10 +182,11 @@ class SelectLocationFragment : BaseFragment(), OnMapReadyCallback {
                     ), zoomLevel
                 )
             )
-        }
-        else {
+        } else {
             map?.isMyLocationEnabled = true
-            _viewModel.showSnackBar.value = getString(R.string.no_current_loction)
+            // for testing,as this toast is depending on permission status,
+            //  we will skip it to grantee catching the test focused  toast "reminder saved"
+            if (!testing) _viewModel.showSnackBar.value = getString(R.string.no_current_loction)
         }
     }
 

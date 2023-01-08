@@ -1,6 +1,8 @@
 package com.udacity.project4
 
+
 import android.app.Application
+import android.os.Build
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
 import androidx.test.espresso.Espresso.onView
@@ -22,8 +24,11 @@ import com.udacity.project4.locationreminders.reminderslist.RemindersListViewMod
 import com.udacity.project4.locationreminders.savereminder.SaveReminderViewModel
 import com.udacity.project4.util.DataBindingIdlingResource
 import com.udacity.project4.util.EspressoIdlingResource
+import com.udacity.project4.util.ToastMatcher
 import com.udacity.project4.util.monitorActivity
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -34,6 +39,7 @@ import org.koin.core.context.stopKoin
 import org.koin.dsl.module
 import org.koin.test.KoinTest
 import org.koin.test.get
+import org.robolectric.annotation.Config
 
 
 @RunWith(AndroidJUnit4::class)
@@ -42,9 +48,11 @@ import org.koin.test.get
 class RemindersActivityTest :
     KoinTest {// Extended Koin Test - embed autoclose @after method to close Koin after every test
 
+
     private lateinit var repository: ReminderDataSource
     private lateinit var appContext: Application
     private lateinit var authenticationActivityViewModel: AuthenticationActivityViewModel
+
 
     /**
      * As we use Koin as a Service Locator Library to develop our code, we'll also use Koin to test our code.
@@ -158,6 +166,7 @@ class RemindersActivityTest :
 
 
     }
+
     @Test
     fun errEnterTitleSnackBar(): Unit = runBlocking {
         //GIVEN
@@ -183,4 +192,60 @@ class RemindersActivityTest :
             .check(matches(withText(appContext.getString(R.string.err_enter_title))))
     }
 
+
+    /**
+     * for the open issue https://github.com/android/android-test/issues/803
+     * run this test for SDK = 28 or below till issue closed
+     * **/
+
+
+    @Config(
+        maxSdk = Build.VERSION_CODES.P,
+        sdk = [Build.VERSION_CODES.P, Build.VERSION_CODES.O, Build.VERSION_CODES.O_MR1, Build.VERSION_CODES.N_MR1, Build.VERSION_CODES.N, Build.VERSION_CODES.M, Build.VERSION_CODES.LOLLIPOP, Build.VERSION_CODES.LOLLIPOP_MR1, Build.VERSION_CODES.KITKAT, Build.VERSION_CODES.KITKAT_WATCH],
+    )
+    @Test
+    fun savedReminderToast(): Unit = runBlocking {
+
+        //GIVEN
+        /** start app and bypass login logic**/
+        val scenario =
+            ActivityScenario.launch<AuthenticationActivity>(AuthenticationActivity::class.java)
+        dataBindingIdlingResource.monitorActivity(scenario)
+        //THEN
+        onView(withId(R.id.remindersListLayout)).check(matches(isDisplayed()))
+
+        /** tap addReminderFAB **/
+        //WHEN
+        onView(withId(R.id.addReminderFAB)).perform(click())
+        //THEN
+        onView(withId(R.id.saveReminderLayout)).check(matches(isDisplayed()))
+
+        /** type in title ,description and tap selectLocation **/
+        //WHEN
+        onView(withId(R.id.reminderTitle)).perform(ViewActions.replaceText("testTitle1"))
+        onView(withId(R.id.reminderDescription)).perform(ViewActions.replaceText("testDescription1"))
+        onView(withId(R.id.selectLocation)).perform(click())
+        //THEN
+        onView(withId(R.id.selectLocationLayout)).check(matches(isDisplayed()))
+
+        /** select arbitrary location and submit selected location **/
+        //WHEN
+        onView(withId(R.id.mapFragment)).perform(click())
+        onView(withId(R.id.submitLocationButton)).perform(click())
+        //THEN
+        onView(withId(R.id.saveReminderLayout)).check(matches(isDisplayed()))
+
+        /** tap saveReminder **/
+        //WHEN
+        onView(withId(R.id.saveReminder)).perform(click())
+
+        withContext(Dispatchers.IO) {
+            Thread.sleep(300)
+        }
+
+        //THEN
+        //https://stackoverflow.com/questions/47092927/testing-toast-message-using-espresso-is-not-resolved
+        onView(withText(R.string.reminder_saved)).inRoot(ToastMatcher())
+            .check(matches(isDisplayed()))
+    }
 }
