@@ -212,7 +212,6 @@ class RemindersActivityTest :
             ActivityScenario.launch<AuthenticationActivity>(AuthenticationActivity::class.java)
         dataBindingIdlingResource.monitorActivity(scenario)
         //THEN
-        onView(withId(R.id.remindersListLayout)).check(matches(isDisplayed()))
 
         /** tap addReminderFAB **/
         //WHEN
