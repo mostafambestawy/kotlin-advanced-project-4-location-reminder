@@ -10,6 +10,7 @@ import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.LargeTest
@@ -77,7 +78,7 @@ class RemindersActivityTest :
             single {
                 AuthenticationActivityViewModel(true)
             }
-            single { RemindersLocalRepository(get()) }
+            single { RemindersLocalRepository(get()) as ReminderDataSource }
             single { LocalDB.createRemindersDao(appContext) }
             single {
                 get() as Boolean
@@ -130,7 +131,7 @@ class RemindersActivityTest :
         //GIVEN
         /** start app and bypass login logic**/
         val scenario =
-            ActivityScenario.launch(AuthenticationActivity::class.java)
+            ActivityScenario.launch<AuthenticationActivity>(AuthenticationActivity::class.java)
         dataBindingIdlingResource.monitorActivity(scenario)
         //THEN
         onView(withId(R.id.remindersListLayout)).check(matches(isDisplayed()))
@@ -160,8 +161,8 @@ class RemindersActivityTest :
         //WHEN
         onView(withId(R.id.saveReminder)).perform(click())
         //THEN
-        onView(withId(R.id.reminderDisplayedTitle)).check(matches(withText("testTitle1")))
-        onView(withId(R.id.reminderDisplayedDescription)).check(matches(withText("testDescription1")))
+        onView(withId(R.id.reminderDisplayedTitle)).check(matches(ViewMatchers.withText("testTitle1")))
+        onView(withId(R.id.reminderDisplayedDescription)).check(matches(ViewMatchers.withText("testDescription1")))
 
 
     }
@@ -171,7 +172,7 @@ class RemindersActivityTest :
         //GIVEN
         /** start app and bypass login logic**/
         val scenario =
-            ActivityScenario.launch(RemindersActivity::class.java)
+            ActivityScenario.launch<RemindersActivity>(RemindersActivity::class.java)
         dataBindingIdlingResource.monitorActivity(scenario)
         //THEN
         onView(withId(R.id.remindersListLayout)).check(matches(isDisplayed()))
@@ -208,9 +209,10 @@ class RemindersActivityTest :
         //GIVEN
         /** start app and bypass login logic**/
         val scenario =
-            ActivityScenario.launch(AuthenticationActivity::class.java)
+            ActivityScenario.launch<AuthenticationActivity>(AuthenticationActivity::class.java)
         dataBindingIdlingResource.monitorActivity(scenario)
         //THEN
+        onView(withId(R.id.remindersListLayout)).check(matches(isDisplayed()))
 
         /** tap addReminderFAB **/
         //WHEN
